@@ -4,8 +4,6 @@
   <p>✨LocalSend-cli✨</p>
 </div>
 
-
-
 ## 安装
 
 > 😊可以下载Release中的可执行文件
@@ -57,8 +55,6 @@ example:
 .\localsend_cli-windows-amd64.exe -mode send -file ./hello.tar.gz -to 192.168.3.199
 ```
 
-
-
 ## 贡献
 
 欢迎提交 issue 和 pull request 来帮助改进这个项目。
@@ -69,5 +65,4 @@ example:
 
 # Todo
 
-- [ ] 发送功能完善 发送文字可以在设备上直接显示
-
+- \[ \] 发送功能完善 发送文字可以在设备上直接显示

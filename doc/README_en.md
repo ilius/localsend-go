@@ -65,5 +65,4 @@ You are welcome to submit issues and pull requests to help improve this project.
 
 # Todo
 
-- [ ] Improve send functionality to display sent text directly on the device
-
+- \[ \] Improve send functionality to display sent text directly on the device
