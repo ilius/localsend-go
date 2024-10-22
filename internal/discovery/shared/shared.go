@@ -11,9 +11,19 @@ import (
 // Global device record hash table and mutex, Message information
 
 var (
-	DiscoveredDevices = make(map[string]BroadcastMessage)
-	Mu                sync.Mutex
+	discoveredDevices      = make(map[string]BroadcastMessage) // TODO: change to pointer
+	discoveredDevicesMutex sync.Mutex
 )
+
+func AddDiscoveredDevice(ip string, msg *BroadcastMessage) bool {
+	discoveredDevicesMutex.Lock()
+	defer discoveredDevicesMutex.Unlock()
+	if _, exists := discoveredDevices[ip]; !exists {
+		discoveredDevices[ip] = *msg
+		return true
+	}
+	return false
+}
 
 // https://github.com/localsend/protocol?tab=readme-ov-file#71-device-type
 var Messsage BroadcastMessage = BroadcastMessage{

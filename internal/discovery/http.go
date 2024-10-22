@@ -166,11 +166,8 @@ func sendHTTPRequest(ctx context.Context, ip string, data []byte) {
 		slog.Error("Failed to parse HTTP response", "ip", ip, "err", err)
 		return
 	}
-	shared.Mu.Lock()
-	if _, exists := shared.DiscoveredDevices[ip]; !exists {
-		shared.DiscoveredDevices[ip] = response
+	if shared.AddDiscoveredDevice(ip, &response) {
 		slog.Info("Discovered device", "alias", response.Alias, "deviceModel", response.DeviceModel, "ip", ip)
 	}
-	shared.Mu.Unlock()
 	// slog.Info("Discovered device", "alias", response.Alias, "deviceModel", response.DeviceModel, "ip", ip)
 }

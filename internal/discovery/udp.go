@@ -79,11 +79,8 @@ func ListenForBroadcasts() {
 			continue
 		}
 
-		shared.Mu.Lock()
-		if _, exists := shared.DiscoveredDevices[remoteAddr.IP.String()]; !exists {
-			shared.DiscoveredDevices[remoteAddr.IP.String()] = message
+		if shared.AddDiscoveredDevice(remoteAddr.IP.String(), &message) {
 			slog.Info("Discovered device", "alias", message.Alias, "deviceModel", message.DeviceModel, "ip", remoteAddr.IP.String())
 		}
-		shared.Mu.Unlock()
 	}
 }
