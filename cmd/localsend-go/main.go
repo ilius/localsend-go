@@ -23,7 +23,7 @@ func main() {
 	// Enable broadcast and monitoring functions
 	go discovery.ListenForBroadcasts()
 	go discovery.StartBroadcast()
-	go discovery.StartHTTPBroadcast() // 启动HTTP广播
+	go discovery.StartHTTPBroadcast() // Start HTTP Broadcast
 
 	// Start HTTP Server
 	httpServer := server.New()
@@ -37,11 +37,11 @@ func main() {
 	// Send and receive part
 	if config.ConfigData.Functions.LocalSendServer {
 
-		httpServer.HandleFunc("/api/localsend/v2/prepare-upload", handlers.PrepareReceive)
-		httpServer.HandleFunc("/api/localsend/v2/upload", handlers.UploadHandler)
+		httpServer.HandleFunc("/api/localsend/v2/prepare-upload", handlers.PrepareUploadAPIHandler)
+		httpServer.HandleFunc("/api/localsend/v2/upload", handlers.UploadAPIHandler)
 		httpServer.HandleFunc("/api/localsend/v2/info", handlers.GetInfoHandler)
-		httpServer.HandleFunc("/send", handlers.NormalSendHandler)  // Upload Handler
-		httpServer.HandleFunc("/receive", handlers.DownloadHandler) // Download Handler
+		httpServer.HandleFunc("/send", handlers.UploadHandler)
+		httpServer.HandleFunc("/receive", handlers.DownloadHandler)
 
 	}
 	go func() {
