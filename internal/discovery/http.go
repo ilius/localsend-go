@@ -7,12 +7,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"localsend_cli/internal/discovery/shared"
-	. "localsend_cli/internal/models"
 	"net"
 	"net/http"
 	"sync"
 	"time"
+
+	"localsend_cli/internal/discovery/shared"
+	. "localsend_cli/internal/models"
 
 	probing "github.com/prometheus-community/pro-bing"
 )
@@ -47,7 +48,7 @@ func getLocalIP() ([]net.IP, error) {
 func pingScan() ([]string, error) {
 	var ips []string
 	ipGroup, err := getLocalIP()
-	//fmt.Println(ip)
+	// fmt.Println(ip)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +87,7 @@ func pingScan() ([]string, error) {
 				if err != nil {
 					// Ignore ping failures
 					return
-					//fmt.Println("Failed to run pinger:", err)
+					// fmt.Println("Failed to run pinger:", err)
 				}
 			}(targetIP)
 		}
@@ -99,7 +100,6 @@ func pingScan() ([]string, error) {
 
 // StartHTTPBroadcast sends HTTP requests to all IPs in the LAN
 func StartHTTPBroadcast() {
-
 	for {
 		data, err := json.Marshal(shared.Messsage)
 		// fmt.Println(string(data))

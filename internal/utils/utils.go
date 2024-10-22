@@ -14,6 +14,7 @@ import (
 func CheckOSType() string {
 	return runtime.GOOS
 }
+
 func WriteToClipBoard(text string) {
 	os := CheckOSType()
 	switch os {
@@ -47,6 +48,7 @@ func WriteToClipBoard(text string) {
 		fmt.Printf("Unsupported OS: %v\n", os)
 	}
 }
+
 func CalculateSHA256(filePath string) (string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {

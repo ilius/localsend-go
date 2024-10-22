@@ -3,14 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+	"net/http"
+	"os"
+
 	"localsend_cli/internal/config"
 	"localsend_cli/internal/discovery"
 	"localsend_cli/internal/handlers"
 	"localsend_cli/internal/pkg/server"
 	"localsend_cli/static"
-	"log"
-	"net/http"
-	"os"
 )
 
 func main() {

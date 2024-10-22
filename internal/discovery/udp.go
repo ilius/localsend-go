@@ -3,10 +3,11 @@ package discovery
 import (
 	"encoding/json"
 	"fmt"
-	"localsend_cli/internal/discovery/shared"
-	. "localsend_cli/internal/models"
 	"net"
 	"time"
+
+	"localsend_cli/internal/discovery/shared"
+	. "localsend_cli/internal/models"
 )
 
 // StartBroadcast sends a broadcast message
@@ -39,7 +40,7 @@ func StartBroadcast() {
 			panic(err)
 		}
 		// fmt.Println(num, "bytes write to multicastAddr")
-		//log
+		// log
 		// fmt.Println("UDP Broadcast message sent!")
 		time.Sleep(5 * time.Second) // Send a broadcast message every 5 seconds
 	}
