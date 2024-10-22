@@ -7,14 +7,14 @@ import (
 	"net/http"
 	"strings"
 	"sync"
+	"sync/atomic"
 
 	"localsend_cli/internal/models"
 	"localsend_cli/internal/utils"
 )
 
 var (
-	sessionIDCounter = 0
-	sessionMutex     sync.Mutex
+	sessionIDCounter = &atomic.Int64{}
 	fileNames        = make(map[string]string) // To save the file name
 	fileNamesRWMutex sync.RWMutex
 )
@@ -28,10 +28,7 @@ func PrepareReceive(w http.ResponseWriter, r *http.Request) {
 	}
 	slog.Info("Received request:", "req", req)
 
-	sessionMutex.Lock()
-	sessionIDCounter++
-	sessionID := fmt.Sprintf("session-%d", sessionIDCounter)
-	sessionMutex.Unlock()
+	sessionID := fmt.Sprintf("session-%d", sessionIDCounter.Add(1))
 
 	files := make(map[string]string)
 	for fileID, fileInfo := range req.Files {
