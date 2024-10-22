@@ -1,4 +1,8 @@
-name="Server"
+name = "Server"
+
+[receive]
+saveUserID = 0
+saveGroupID = 0
 
 [functions]
 http_file_server = true

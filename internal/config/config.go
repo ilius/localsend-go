@@ -14,7 +14,11 @@ var EmbeddedConfig embed.FS
 
 type Config struct {
 	NameOfDevice string `toml:"name"`
-	Functions    struct {
+	Receive      struct {
+		SaveUserID  int `toml:"saveUserID"`
+		SaveGroupID int `toml:"saveGroupID"`
+	} `toml:"receive"`
+	Functions struct {
 		HttpFileServer  bool `toml:"http_file_server"`
 		LocalSendServer bool `toml:"local_send_server"`
 	} `toml:"functions"`

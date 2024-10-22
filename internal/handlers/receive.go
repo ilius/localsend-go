@@ -11,6 +11,7 @@ import (
 	"strings"
 	"sync"
 
+	"localsend_cli/internal/config"
 	"localsend_cli/internal/models"
 	"localsend_cli/internal/utils"
 )
@@ -112,6 +113,13 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 			slog.Error("Error writing file", "err", err)
 			return
 
+		}
+	}
+	if config.ConfigData.Receive.SaveUserID > 0 || config.ConfigData.Receive.SaveGroupID > 0 {
+		slog.Debug("Changing file ownership and group")
+		err := os.Chown(filePath, config.ConfigData.Receive.SaveUserID, config.ConfigData.Receive.SaveGroupID)
+		if err != nil {
+			slog.Error("Failed to change ownership of file", "err", err)
 		}
 	}
 
