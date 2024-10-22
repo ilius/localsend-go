@@ -1,73 +1,68 @@
 <div align="center">
 <h1>LocalSend CLI</h1>
-<img src="doc/images/image.png" alt="LocalSend CLI logo" width="150" height="150">
-<p>✨LocalSend CLI✨</p>
+  <img src="images/image.png" alt="LocalSend CLI logo" width="150" height="150">
+  <p>✨LocalSend CLI✨</p>
 </div>
-
-## Documentation
-
-[Chinese](doc/README_zh.md) | [English](doc/README_en.md)
 
 ## Installation
 
-> 😊You can download the executable file in Release
+> 😊 You can download the executable files from the Releases.
 
 ### Prerequisites
 
 - [Go](https://golang.org/dl/) 1.16 or higher
 
-### Clone the repository
+### Clone the Repository
 
 ```sh
 git clone https://github.com/ilius/localsend_cli.git
 cd localsend_cli
 ```
 
-### Compile
+### Build
 
-Use `Makefile` to compile the program.
+Use the `Makefile` to build the program.
 
 ```sh
 make build
 ```
 
-This will generate binaries for all supported platforms and save them in the `bin` directory.
+This will generate binary files for all supported platforms and save them in the `bin` directory.
 
 ## Usage
 
-### Run the program
+### Run the Program
 
-#### Receive mode
+#### Receive Mode
 
 ```sh
 .\localsend_cli-windows-amd64.exe -mode receive
 ```
 
-Select the appropriate binary to run based on your operating system and architecture.
-
-In Linux, you need to execute this command to enable its ping function
+Choose the appropriate binary file for your operating system and architecture.
+On Linux, you need to execute this command to enable its ping functionality:
 `sudo setcap cap_net_raw=+ep localsend_cli`
 
-#### Send mode
+#### Send Mode
 
-```
+```sh
 .\localsend_cli-windows-amd64.exe -mode send -file ./xxxx.xx -to your_ip
 ```
 
-example:
+Example:
 
-```
+```sh
 .\localsend_cli-windows-amd64.exe -mode send -file ./hello.tar.gz -to 192.168.3.199
 ```
 
 ## Contribution
 
-Welcome to submit issues and pull requests to help improve this project.
+You are welcome to submit issues and pull requests to help improve this project.
 
 ## License
 
-<!-- [MIT](LICENSE) -->
+[MIT](LICENSE)
 
 # Todo
 
-- \[ \] Improve the sending function. The sent text can be displayed directly on the device
+- \[ \] Improve send functionality to display sent text directly on the device
