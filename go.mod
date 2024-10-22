@@ -3,8 +3,8 @@ module localsend_cli
 go 1.22
 
 require (
+	github.com/BurntSushi/toml v1.4.0
 	github.com/prometheus-community/pro-bing v0.4.1
-	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (

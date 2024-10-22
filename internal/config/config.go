@@ -6,18 +6,18 @@ import (
 	"log/slog"
 	"os"
 
-	"gopkg.in/yaml.v2"
+	"github.com/BurntSushi/toml"
 )
 
-//go:embed config.yaml
+//go:embed config.toml
 var EmbeddedConfig embed.FS
 
 type Config struct {
-	NameOfDevice string `yaml:"name"`
+	NameOfDevice string `toml:"name"`
 	Functions    struct {
-		HttpFileServer  bool `yaml:"http_file_server"`
-		LocalSendServer bool `yaml:"local_send_server"`
-	} `yaml:"functions"`
+		HttpFileServer  bool `toml:"http_file_server"`
+		LocalSendServer bool `toml:"local_send_server"`
+	} `toml:"functions"`
 }
 
 var ConfigData Config
@@ -27,17 +27,17 @@ func init() {
 	var err error
 
 	// Try to read configuration files from external file system
-	bytes, err = os.ReadFile("internal/config/config.yaml")
+	bytes, err = os.ReadFile("internal/config/config.toml")
 	if err != nil {
 		slog.Info("Failed to read external configuration file, using built-in configuration")
 		// If reading the external file fails, read from the embedded file system
-		bytes, err = EmbeddedConfig.ReadFile("config.yaml")
+		bytes, err = EmbeddedConfig.ReadFile("config.toml")
 		if err != nil {
 			log.Fatalf("Error reading embedded config file: %v", err)
 		}
 	}
 
-	err = yaml.Unmarshal(bytes, &ConfigData)
+	err = toml.Unmarshal(bytes, &ConfigData)
 	if err != nil {
 		log.Fatalf("Error parsing config file: %v", err)
 	}
