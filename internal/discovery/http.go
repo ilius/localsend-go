@@ -169,8 +169,8 @@ func sendHTTPRequest(ctx context.Context, ip string, data []byte) {
 	shared.Mu.Lock()
 	if _, exists := shared.DiscoveredDevices[ip]; !exists {
 		shared.DiscoveredDevices[ip] = response
-		slog.Info("Discovered device", "alias", response.Alias, "model", response.DeviceModel, "ip", ip)
+		slog.Info("Discovered device", "alias", response.Alias, "deviceModel", response.DeviceModel, "ip", ip)
 	}
 	shared.Mu.Unlock()
-	// slog.Info("Discovered device", "alias", response.Alias, "model", response.DeviceModel, "ip", ip)
+	// slog.Info("Discovered device", "alias", response.Alias, "deviceModel", response.DeviceModel, "ip", ip)
 }
