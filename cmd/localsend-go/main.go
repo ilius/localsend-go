@@ -40,8 +40,8 @@ func main() {
 		httpServer.HandleFunc("/api/localsend/v2/prepare-upload", handlers.PrepareReceive)
 		httpServer.HandleFunc("/api/localsend/v2/upload", handlers.ReceiveHandler)
 		httpServer.HandleFunc("/api/localsend/v2/info", handlers.GetInfoHandler)
-		httpServer.HandleFunc("/send", handlers.NormalSendHandler)       // Upload Handler
-		httpServer.HandleFunc("/receive", handlers.NormalReceiveHandler) // Download Handler
+		httpServer.HandleFunc("/send", handlers.NormalSendHandler)  // Upload Handler
+		httpServer.HandleFunc("/receive", handlers.DownloadHandler) // Download Handler
 
 	}
 	go func() {

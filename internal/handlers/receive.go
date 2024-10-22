@@ -127,8 +127,8 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// ReceiveHandler handles file download requests
-func NormalReceiveHandler(w http.ResponseWriter, r *http.Request) {
+// DownloadHandler handles file download requests
+func DownloadHandler(w http.ResponseWriter, r *http.Request) {
 	fileName := r.URL.Query().Get("file")
 	if fileName == "" {
 		http.Error(w, "File parameter is required", http.StatusBadRequest)
