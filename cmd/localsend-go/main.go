@@ -11,6 +11,7 @@ import (
 	"localsend_cli/internal/discovery"
 	"localsend_cli/internal/handlers"
 	"localsend_cli/internal/pkg/server"
+	"localsend_cli/internal/send"
 	"localsend_cli/static"
 )
 
@@ -63,7 +64,7 @@ func main() {
 			flag.Usage()
 			os.Exit(1)
 		}
-		err := handlers.SendFile(*toDevice, *filePath)
+		err := send.SendFile(*toDevice, *filePath)
 		if err != nil {
 			log.Fatalf("Send failed: %v", err)
 		}
