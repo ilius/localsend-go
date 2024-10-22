@@ -11,7 +11,7 @@ import (
 // Global device record hash table and mutex, Message information
 
 var (
-	discoveredDevices      = make(map[string]BroadcastMessage) // TODO: change to pointer
+	discoveredDevices      = make(map[string]*BroadcastMessage)
 	discoveredDevicesMutex sync.Mutex
 )
 
@@ -19,7 +19,7 @@ func AddDiscoveredDevice(ip string, msg *BroadcastMessage) bool {
 	discoveredDevicesMutex.Lock()
 	defer discoveredDevicesMutex.Unlock()
 	if _, exists := discoveredDevices[ip]; !exists {
-		discoveredDevices[ip] = *msg
+		discoveredDevices[ip] = msg
 		return true
 	}
 	return false
