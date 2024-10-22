@@ -1,6 +1,6 @@
 <div align="center">
 <h1>LocalSend CLI</h1>
-  <img src="images/image.png" alt="LocalSend CLI logo" width="150" height="150">
+  <img src="doc/images/image.png" alt="LocalSend CLI logo" width="150" height="150">
   <p>✨LocalSend CLI✨</p>
 </div>
 
