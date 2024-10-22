@@ -22,7 +22,9 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Use fileID to get the file name
+	fileNamesRWMutex.RLock()
 	fileName, ok := fileNames[fileID]
+	fileNamesRWMutex.RUnlock()
 	if !ok {
 		http.Error(w, "Invalid file ID", http.StatusBadRequest)
 		return

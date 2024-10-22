@@ -16,6 +16,7 @@ var (
 	sessionIDCounter = 0
 	sessionMutex     sync.Mutex
 	fileNames        = make(map[string]string) // To save the file name
+	fileNamesRWMutex sync.RWMutex
 )
 
 func PrepareReceive(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +39,9 @@ func PrepareReceive(w http.ResponseWriter, r *http.Request) {
 		files[fileID] = token
 
 		// Save file name
+		fileNamesRWMutex.Lock()
 		fileNames[fileID] = fileInfo.FileName
+		fileNamesRWMutex.Unlock()
 
 		if strings.HasSuffix(fileInfo.FileName, ".txt") {
 			slog.Info("TXT file content preview", "preview", string(fileInfo.Preview))
