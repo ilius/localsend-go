@@ -10,7 +10,7 @@
 
 ### Prerequisites
 
-- [Go](https://golang.org/dl/) 1.16 or higher
+- [Go](https://golang.org/dl/) 1.22 or higher
 
 ### Clone the Repository
 
