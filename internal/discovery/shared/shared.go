@@ -19,7 +19,7 @@ var (
 var Messsage BroadcastMessage = BroadcastMessage{
 	Alias:       config.ConfigData.NameOfDevice,
 	Version:     "2.0",
-	DeviceModel: utils.CheckOSType(),
+	DeviceModel: utils.OSType(),
 	DeviceType:  "headless", // Indicates that it is running without GUI
 	Fingerprint: "random-string",
 	Port:        53317,

@@ -1,22 +1,13 @@
 package utils
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
-	"io"
 	"log/slog"
-	"os"
 	"os/exec"
-	"runtime"
 	"strings"
 )
 
-func CheckOSType() string {
-	return runtime.GOOS
-}
-
 func WriteToClipBoard(text string) {
-	os := CheckOSType()
+	os := OSType()
 	switch os {
 	case "linux":
 		cmd := exec.Command("xclip", "-selection", "clipboard")
@@ -47,19 +38,4 @@ func WriteToClipBoard(text string) {
 	default:
 		slog.Error("WriteToClipBoard: Unsupported OS", "os", os)
 	}
-}
-
-func CalculateSHA256(filePath string) (string, error) {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	hash := sha256.New()
-	if _, err := io.Copy(hash, file); err != nil {
-		return "", err
-	}
-
-	return hex.EncodeToString(hash.Sum(nil)), nil
 }
