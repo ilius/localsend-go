@@ -18,7 +18,7 @@ import (
 	"localsend_cli/internal/utils"
 )
 
-func SendFileToOtherDevicePrepare(ip, path string) (*models.PrepareReceiveResponse, error) {
+func sendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiveResponse, error) {
 	// Prepare metadata for all files
 	files := make(map[string]models.FileInfo)
 	err := filepath.Walk(path, func(filePath string, info os.FileInfo, err error) error {
@@ -160,8 +160,8 @@ func uploadFile(ip, sessionId, fileId, token, filePath string) error {
 	return nil
 }
 
-func SendFile(ip, path string) error {
-	response, err := SendFileToOtherDevicePrepare(ip, path)
+func SendFile(ip string, path string) error {
+	response, err := sendFileToOtherDevicePrepare(ip, path)
 	slog.Info("SendFile: got response", "response", response)
 	if err != nil {
 		return err
