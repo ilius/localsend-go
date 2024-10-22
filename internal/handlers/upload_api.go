@@ -12,8 +12,6 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"localsend_cli/internal/config"
-
 	"localsend_cli/internal/models"
 	"localsend_cli/internal/utils"
 )
@@ -118,13 +116,7 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 		}
 	}
-	if config.ConfigData.Receive.SaveUserID > 0 || config.ConfigData.Receive.SaveGroupID > 0 {
-		slog.Debug("Changing file ownership and group")
-		err := os.Chown(filePath, config.ConfigData.Receive.SaveUserID, config.ConfigData.Receive.SaveGroupID)
-		if err != nil {
-			slog.Error("Failed to change ownership of file", "err", err)
-		}
-	}
+	changeFileOwnerGroup(filePath)
 
 	slog.Info("Saved file", "filePath", filePath)
 	w.WriteHeader(http.StatusOK)

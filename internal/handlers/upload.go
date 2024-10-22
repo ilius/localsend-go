@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"localsend_cli/internal/config"
 	"localsend_cli/internal/discovery/shared"
 	"localsend_cli/internal/models"
 	"localsend_cli/internal/utils"
@@ -192,7 +193,7 @@ func SendFile(ip, path string) error {
 	return nil
 }
 
-// SendHandler handles file upload requests
+// UploadHandler handles file upload requests
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	// Parsing multipart/form-data
 	if err := r.ParseMultipartForm(10 << 20); err != nil {
@@ -222,14 +223,27 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("Could not create file: %v", err), http.StatusInternalServerError)
 		return
 	}
-	defer dst.Close()
 
 	// Write the uploaded file content to the target file
 	if _, err := io.Copy(dst, file); err != nil {
+		dst.Close()
 		http.Error(w, fmt.Sprintf("Could not save file: %v", err), http.StatusInternalServerError)
 		return
 	}
 
+	dst.Close()
+	changeFileOwnerGroup(filePath)
+
 	w.WriteHeader(http.StatusCreated)
 	fmt.Fprintf(w, "File uploaded successfully: %s\n", handler.Filename)
+}
+
+func changeFileOwnerGroup(filePath string) {
+	if config.ConfigData.Receive.SaveUserID > 0 || config.ConfigData.Receive.SaveGroupID > 0 {
+		slog.Debug("Changing file ownership and group")
+		err := os.Chown(filePath, config.ConfigData.Receive.SaveUserID, config.ConfigData.Receive.SaveGroupID)
+		if err != nil {
+			slog.Error("Failed to change ownership of file", "err", err)
+		}
+	}
 }
