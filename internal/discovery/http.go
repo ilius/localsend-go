@@ -7,13 +7,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	"net"
 	"net/http"
 	"sync"
 	"time"
 
 	"localsend_cli/internal/discovery/shared"
-	. "localsend_cli/internal/models"
+	"localsend_cli/internal/models"
 
 	probing "github.com/prometheus-community/pro-bing"
 )
@@ -48,7 +49,7 @@ func getLocalIP() ([]net.IP, error) {
 func pingScan() ([]string, error) {
 	var ips []string
 	ipGroup, err := getLocalIP()
-	// fmt.Println(ip)
+	slog.Debug("pingScan", "ip", ips)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +72,7 @@ func pingScan() ([]string, error) {
 				defer wg.Done()
 				pinger, err := probing.NewPinger(ip)
 				if err != nil {
-					fmt.Println("Failed to create pinger:", err)
+					slog.Error("Failed to create pinger:", "err", err)
 					return
 				}
 				pinger.SetPrivileged(true)
@@ -86,15 +87,15 @@ func pingScan() ([]string, error) {
 				err = pinger.Run()
 				if err != nil {
 					// Ignore ping failures
+					slog.Debug("Failed to run pinger:", "err", err)
 					return
-					// fmt.Println("Failed to run pinger:", err)
 				}
 			}(targetIP)
 		}
 
 		wg.Wait()
 	}
-	// fmt.Println(ips)
+	slog.Debug("pingScan (end)", "ip", ips)
 	return ips, nil
 }
 
@@ -102,14 +103,14 @@ func pingScan() ([]string, error) {
 func StartHTTPBroadcast() {
 	for {
 		data, err := json.Marshal(shared.Messsage)
-		// fmt.Println(string(data))
+		slog.Debug(string(data))
 		if err != nil {
 			panic(err)
 		}
 
 		ips, err := pingScan()
 		if err != nil {
-			fmt.Println("Failed to discover devices via ping scan:", err)
+			slog.Error("Failed to discover devices via ping scan:", "err", err)
 			return
 		}
 
@@ -124,8 +125,7 @@ func StartHTTPBroadcast() {
 		}
 
 		wg.Wait()
-		// log
-		// fmt.Println("HTTP broadcast messages sent!")
+		slog.Debug("HTTP broadcast messages sent!")
 		time.Sleep(5 * time.Second) // Send HTTP broadcast message every 5 seconds
 	}
 }
@@ -135,7 +135,7 @@ func sendHTTPRequest(ctx context.Context, ip string, data []byte) {
 	url := fmt.Sprintf("https://%s:53317/api/localsend/v2/register", ip)
 	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(data))
 	if err != nil {
-		fmt.Println("Failed to create HTTP request:", err)
+		slog.Info("Failed to create HTTP request:", "err", err)
 		return
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -157,20 +157,20 @@ func sendHTTPRequest(ctx context.Context, ip string, data []byte) {
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Failed to read HTTP response body:", err)
+		slog.Error("Failed to read HTTP response body:", "err", err)
 		return
 	}
-	var response BroadcastMessage
+	var response models.BroadcastMessage
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		fmt.Printf("Failed to parse HTTP response from %s: %v\n", ip, err)
+		slog.Error("Failed to parse HTTP response", "ip", ip, "err", err)
 		return
 	}
 	shared.Mu.Lock()
 	if _, exists := shared.DiscoveredDevices[ip]; !exists {
 		shared.DiscoveredDevices[ip] = response
-		fmt.Printf("Discovered device: %s (%s) at %s\n", response.Alias, response.DeviceModel, ip)
+		slog.Info("Discovered device", "alias", response.Alias, "model", response.DeviceModel, "ip", ip)
 	}
 	shared.Mu.Unlock()
-	// fmt.Printf("Discovered device: %s (%s) at %s\n", response.Alias, response.DeviceModel, ip)
+	// slog.Info("Discovered device", "alias", response.Alias, "model", response.DeviceModel, "ip", ip)
 }

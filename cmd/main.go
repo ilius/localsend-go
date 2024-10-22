@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 
@@ -45,7 +45,7 @@ func main() {
 
 	}
 	go func() {
-		log.Println("Server started at :53317")
+		slog.Info("Server started at :53317")
 		if err := http.ListenAndServe(":53317", httpServer); err != nil {
 			log.Fatalf("Server failed: %v", err)
 		}
@@ -54,12 +54,12 @@ func main() {
 	switch *mode {
 	case "send":
 		if *filePath == "" {
-			fmt.Println("Send mode requires a file path")
+			slog.Info("Send mode requires a file path")
 			flag.Usage()
 			os.Exit(1)
 		}
 		if *toDevice == "" {
-			fmt.Println("Send mode requires a toDevice")
+			slog.Info("Send mode requires a toDevice")
 			flag.Usage()
 			os.Exit(1)
 		}
@@ -67,20 +67,11 @@ func main() {
 		if err != nil {
 			log.Fatalf("Send failed: %v", err)
 		}
-		// if err := sendFile(*filePath); err != nil {
-		// 	log.Fatalf("Send failed: %v", err)
-		// }
 	case "receive":
-		fmt.Println("Waiting to receive files...")
+		slog.Info("Waiting to receive files...")
 		select {} // Blocking program waiting to receive file
 	default:
 		flag.Usage()
 		os.Exit(1)
 	}
-}
-
-func sendFile(filePath string) error {
-	fmt.Println("Sending file:", filePath)
-	// Logic for uploading files
-	return nil
 }

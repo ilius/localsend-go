@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -154,13 +155,13 @@ func uploadFile(ip, sessionId, fileId, token, filePath string) error {
 		return fmt.Errorf("file upload failed: received status code %d", resp.StatusCode)
 	}
 
-	fmt.Println("File uploaded successfully")
+	slog.Info("File uploaded successfully")
 	return nil
 }
 
 func SendFile(ip string, path string) error {
 	response, err := SendFileToOtherDevicePrepare(ip, path)
-	fmt.Println("response:", response)
+	slog.Info("SendFile: got response", "response", response)
 	if err != nil {
 		return err
 	}

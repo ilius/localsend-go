@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
+	"log/slog"
 	"net/http"
 
 	"localsend_cli/internal/discovery/shared"
@@ -12,7 +12,7 @@ func GetInfoHandler(w http.ResponseWriter, r *http.Request) {
 	msg := shared.Messsage
 	res, err := json.Marshal(msg)
 	if err != nil {
-		fmt.Println("json convert failed:", err)
+		slog.Error("json convert failed:", "err", err)
 		http.Error(w, "json convert failed", http.StatusInternalServerError)
 		return
 	}
@@ -20,7 +20,7 @@ func GetInfoHandler(w http.ResponseWriter, r *http.Request) {
 	_, err = w.Write(res)
 	if err != nil {
 		http.Error(w, "Failed to write file", http.StatusInternalServerError)
-		fmt.Println("Error writing file:", err)
+		slog.Error("Error writing file:", "err", err)
 		return
 	}
 }

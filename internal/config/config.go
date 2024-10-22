@@ -2,8 +2,8 @@ package config
 
 import (
 	"embed"
-	"fmt"
 	"log"
+	"log/slog"
 	"os"
 
 	"gopkg.in/yaml.v2"
@@ -29,7 +29,7 @@ func init() {
 	// Try to read configuration files from external file system
 	bytes, err = os.ReadFile("internal/config/config.yaml")
 	if err != nil {
-		fmt.Println("Failed to read external configuration file, using built-in configuration")
+		slog.Info("Failed to read external configuration file, using built-in configuration")
 		// If reading the external file fails, read from the embedded file system
 		bytes, err = EmbeddedConfig.ReadFile("config.yaml")
 		if err != nil {

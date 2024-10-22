@@ -3,8 +3,8 @@ package utils
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"fmt"
 	"io"
+	"log/slog"
 	"os"
 	"os/exec"
 	"runtime"
@@ -23,29 +23,29 @@ func WriteToClipBoard(text string) {
 		cmd.Stdin = strings.NewReader(text)
 		err := cmd.Run()
 		if err != nil {
-			fmt.Printf("Error copying to clipboard on Linux: %v\n", err)
+			slog.Error("Error copying to clipboard on Linux", "err", err)
 		} else {
-			fmt.Println("Text copied to clipboard on Linux!")
+			slog.Info("Text copied to clipboard on Linux!")
 		}
 	case "windows":
 		cmd := exec.Command("cmd", "/c", "echo "+text+" | clip")
 		err := cmd.Run()
 		if err != nil {
-			fmt.Printf("Error copying to clipboard on Windows: %v\n", err)
+			slog.Error("Error copying to clipboard on Windows", "err", err)
 		} else {
-			fmt.Println("Text copied to clipboard on Windows!")
+			slog.Info("Text copied to clipboard on Windows!")
 		}
 	case "darwin":
 		cmd := exec.Command("pbcopy")
 		cmd.Stdin = strings.NewReader(text)
 		err := cmd.Run()
 		if err != nil {
-			fmt.Printf("Error copying to clipboard on macOS: %v\n", err)
+			slog.Error("Error copying to clipboard on MacOS", "err", err)
 		} else {
-			fmt.Println("Text copied to clipboard on macOS!")
+			slog.Info("Text copied to clipboard on MacOS!")
 		}
 	default:
-		fmt.Printf("Unsupported OS: %v\n", os)
+		slog.Error("WriteToClipBoard: Unsupported OS", "os", os)
 	}
 }
 

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -27,7 +28,7 @@ func PrepareReceive(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	fmt.Println("Received request:", req)
+	slog.Info("Received request:", "req", req)
 
 	sessionMutex.Lock()
 	sessionIDCounter++
@@ -43,7 +44,7 @@ func PrepareReceive(w http.ResponseWriter, r *http.Request) {
 		fileNames[fileID] = fileInfo.FileName
 
 		if strings.HasSuffix(fileInfo.FileName, ".txt") {
-			fmt.Println("TXT file content preview:", string(fileInfo.Preview))
+			slog.Info("TXT file content preview", "preview", string(fileInfo.Preview))
 			utils.WriteToClipBoard(fileInfo.Preview)
 		}
 	}
@@ -81,14 +82,14 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 	err := os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
 		http.Error(w, "Failed to create directory", http.StatusInternalServerError)
-		fmt.Println("Error creating directory:", err)
+		slog.Error("Error creating directory", "err", err)
 		return
 	}
 	// Create a file
 	file, err := os.Create(filePath)
 	if err != nil {
 		http.Error(w, "Failed to create file", http.StatusInternalServerError)
-		fmt.Println("Error creating file:", err)
+		slog.Error("Error creating file", "err", err)
 		return
 	}
 	defer file.Close()
@@ -98,7 +99,7 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 		n, err := r.Body.Read(buffer)
 		if err != nil && err != io.EOF {
 			http.Error(w, "Failed to read file", http.StatusInternalServerError)
-			fmt.Println("Error reading file:", err)
+			slog.Error("Error reading file", "err", err)
 			return
 		}
 		if n == 0 {
@@ -108,13 +109,13 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 		_, err = file.Write(buffer[:n])
 		if err != nil {
 			http.Error(w, "Failed to write file", http.StatusInternalServerError)
-			fmt.Println("Error writing file:", err)
+			slog.Error("Error writing file", "err", err)
 			return
 
 		}
 	}
 
-	fmt.Println("Saved file:", filePath)
+	slog.Info("Saved file", "filePath", filePath)
 	w.WriteHeader(http.StatusOK)
 }
 
