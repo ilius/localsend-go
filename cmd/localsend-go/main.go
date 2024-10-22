@@ -29,15 +29,16 @@ func main() {
 	// Start HTTP Server
 	httpServer := server.New()
 	if config.ConfigData.Functions.HttpFileServer {
-
 		// If you enable the http file server, enable the following routes
 		httpServer.HandleFunc("/", handlers.IndexFileHandler)
 		httpServer.HandleFunc("/uploads/", handlers.FileServerHandler)
-		httpServer.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.FS(static.EmbeddedStaticFiles))))
+		httpServer.Handle(
+			"/static/",
+			http.StripPrefix("/static/", http.FileServer(http.FS(static.EmbeddedStaticFiles))),
+		)
 	}
 	// Send and receive part
 	if config.ConfigData.Functions.LocalSendServer {
-
 		httpServer.HandleFunc("/api/localsend/v2/prepare-upload", handlers.PrepareUploadAPIHandler)
 		httpServer.HandleFunc("/api/localsend/v2/upload", handlers.UploadAPIHandler)
 		httpServer.HandleFunc("/api/localsend/v2/info", handlers.GetInfoHandler)
