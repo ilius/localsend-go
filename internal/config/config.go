@@ -5,9 +5,12 @@ import (
 	"log"
 	"log/slog"
 	"os"
+	"path/filepath"
 
 	"github.com/BurntSushi/toml"
 )
+
+const fileName = "config.toml"
 
 //go:embed config.toml
 var EmbeddedConfig embed.FS
@@ -26,12 +29,36 @@ type Config struct {
 
 var ConfigData Config
 
+func Path() string {
+	_path := os.Getenv("CONFIG_FILE")
+	if _path != "" {
+		absPath, err := filepath.Abs(_path)
+		if err == nil {
+			return absPath
+		} else {
+			slog.Error("bad CONFIG_FILE", "CONFIG_FILE", _path, "err", err)
+		}
+	}
+	return filepath.Join(GetConfigDir(), fileName)
+}
+
+func GetConfigDir() string {
+	if os.Getenv("CONFIG_FILE") != "" {
+		return filepath.Dir(Path())
+	}
+	return platformConfigDir()
+}
+
 func init() {
 	var bytes []byte
 	var err error
 
+	configPath := filepath.Join(GetConfigDir(), fileName)
+
+	slog.Info("Reading user config file", "configPath", configPath)
+
 	// Try to read configuration files from external file system
-	bytes, err = os.ReadFile("internal/config/config.toml")
+	bytes, err = os.ReadFile(configPath)
 	if err != nil {
 		slog.Info("Failed to read external configuration file, using built-in configuration")
 		// If reading the external file fails, read from the embedded file system
@@ -45,4 +72,5 @@ func init() {
 	if err != nil {
 		log.Fatalf("Error parsing config file: %v", err)
 	}
+	slog.Info("Loaded user config file", "configData", ConfigData)
 }
