@@ -4,7 +4,6 @@
 package config
 
 import (
-	"log/slog"
 	"os"
 	"path/filepath"
 )
