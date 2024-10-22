@@ -231,7 +231,12 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dst.Close()
+	err = dst.Close()
+	if err != nil {
+		slog.Error("Failed to close file", "err", err)
+		http.Error(w, fmt.Sprintf("Could not save file: %v", err), http.StatusInternalServerError)
+		return
+	}
 	changeFileOwnerGroup(filePath)
 
 	w.WriteHeader(http.StatusCreated)
