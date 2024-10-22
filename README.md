@@ -1,54 +1,54 @@
-
 <div align="center">
 <h1>LocalSend CLI</h1>
-  <img src="doc/images/image.png" alt="LocalSend CLI logo" width="150" height="150">
-  <p>✨LocalSend CLI✨</p>
+<img src="doc/images/image.png" alt="LocalSend CLI logo" width="150" height="150">
+<p>✨LocalSend CLI✨</p>
 </div>
 
-## 文档
+## Documentation
 
-[中文](doc/README_zh.md) | [英文](doc/README_en.md)
+[Chinese](doc/README_zh.md) | [English](doc/README_en.md)
 
-## 安装
+## Installation
 
-> 😊可以下载Release中的可执行文件
+> 😊You can download the executable file in Release
 
-### 先决条件
+### Prerequisites
 
-- [Go](https://golang.org/dl/) 1.16 或更高版本
+- [Go](https://golang.org/dl/) 1.16 or higher
 
-### 克隆仓库
+### Clone the repository
 
 ```sh
-git clone https://github.com/meowrain/localsend_cli.git
+git clone https://github.com/ilius/localsend_cli.git
 cd localsend_cli
 ```
 
-### 编译
+### Compile
 
-使用 `Makefile` 来编译程序。
+Use `Makefile` to compile the program.
 
 ```sh
 make build
 ```
 
-这将会为所有支持的平台生成二进制文件，并保存在 `bin` 目录中。
+This will generate binaries for all supported platforms and save them in the `bin` directory.
 
-## 使用
+## Usage
 
-### 运行程序
+### Run the program
 
-#### 接收模式
+#### Receive mode
 
 ```sh
 .\localsend_cli-windows-amd64.exe -mode receive
 ```
 
-根据你的操作系统和架构选择相应的二进制文件运行。
-Linux下需要执行这个命令，启用其ping功能
+Select the appropriate binary to run based on your operating system and architecture.
+
+In Linux, you need to execute this command to enable its ping function
 `sudo setcap cap_net_raw=+ep localsend_cli`
 
-#### 发送模式
+#### Send mode
 
 ```
 .\localsend_cli-windows-amd64.exe -mode send -file ./xxxx.xx -to your_ip
@@ -60,15 +60,14 @@ example:
 .\localsend_cli-windows-amd64.exe -mode send -file ./hello.tar.gz -to 192.168.3.199
 ```
 
-## 贡献
+## Contribution
 
-欢迎提交 issue 和 pull request 来帮助改进这个项目。
+Welcome to submit issues and pull requests to help improve this project.
 
-## 许可证
+## License
 
 <!-- [MIT](LICENSE) -->
 
 # Todo
 
-- [ ] 发送功能完善 发送文字可以在设备上直接显示
-
+- \[ \] Improve the sending function. The sent text can be displayed directly on the device

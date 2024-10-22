@@ -17,7 +17,7 @@
 ### 克隆仓库
 
 ```sh
-git clone https://github.com/meowrain/localsend_cli.git
+git clone https://github.com/ilius/localsend_cli.git
 cd localsend_cli
 ```
 

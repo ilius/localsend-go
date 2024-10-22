@@ -17,7 +17,7 @@ import (
 	probing "github.com/prometheus-community/pro-bing"
 )
 
-// getLocalIP 获取本地 IP 地址
+// getLocalIP Get the local IP address
 func getLocalIP() ([]net.IP, error) {
 	ips := make([]net.IP, 0)
 	ifaces, err := net.Interfaces()
@@ -43,7 +43,7 @@ func getLocalIP() ([]net.IP, error) {
 	return ips, nil
 }
 
-// pingScan 使用 ICMP ping 扫描局域网内的所有活动设备
+// pingScan uses ICMP ping to scan all active devices on the LAN
 func pingScan() ([]string, error) {
 	var ips []string
 	ipGroup, err := getLocalIP()
@@ -52,7 +52,7 @@ func pingScan() ([]string, error) {
 		return nil, err
 	}
 	for _, i := range ipGroup {
-		ip := i.Mask(net.IPv4Mask(255, 255, 255, 0)) // 假设是 24 子网掩码
+		ip := i.Mask(net.IPv4Mask(255, 255, 255, 0)) // Assume the subnet mask is 24
 		ip4 := ip.To4()
 		if ip4 == nil {
 			return nil, fmt.Errorf("invalid IPv4 address")
@@ -84,7 +84,7 @@ func pingScan() ([]string, error) {
 				}
 				err = pinger.Run()
 				if err != nil {
-					//忽视发送ping失败
+					// Ignore ping failures
 					return
 					//fmt.Println("Failed to run pinger:", err)
 				}
@@ -97,7 +97,7 @@ func pingScan() ([]string, error) {
 	return ips, nil
 }
 
-// StartHTTPBroadcast 向局域网内的所有 IP 发送 HTTP 请求
+// StartHTTPBroadcast sends HTTP requests to all IPs in the LAN
 func StartHTTPBroadcast() {
 
 	for {
@@ -126,11 +126,11 @@ func StartHTTPBroadcast() {
 		wg.Wait()
 		// log
 		// fmt.Println("HTTP broadcast messages sent!")
-		time.Sleep(5 * time.Second) // 每5秒发送一次HTTP广播消息
+		time.Sleep(5 * time.Second) // Send HTTP broadcast message every 5 seconds
 	}
 }
 
-// sendHTTPRequest 发送 HTTP 请求
+// sendHTTPRequest sends HTTP requests
 func sendHTTPRequest(ctx context.Context, ip string, data []byte) {
 	url := fmt.Sprintf("https://%s:53317/api/localsend/v2/register", ip)
 	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(data))

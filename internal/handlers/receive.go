@@ -16,7 +16,7 @@ import (
 var (
 	sessionIDCounter = 0
 	sessionMutex     sync.Mutex
-	fileNames        = make(map[string]string) // 用于保存文件名
+	fileNames        = make(map[string]string) // To save the file name
 )
 
 func PrepareReceive(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +38,7 @@ func PrepareReceive(w http.ResponseWriter, r *http.Request) {
 		token := fmt.Sprintf("token-%s", fileID)
 		files[fileID] = token
 
-		// 保存文件名
+		// Save file name
 		fileNames[fileID] = fileInfo.FileName
 
 		if strings.HasSuffix(fileInfo.FileName, ".txt") {
@@ -59,22 +59,22 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 	fileID := r.URL.Query().Get("fileId")
 	token := r.URL.Query().Get("token")
 
-	// 验证请求参数
+	// Verify request parameters
 	if sessionID == "" || fileID == "" || token == "" {
 		http.Error(w, "Missing parameters", http.StatusBadRequest)
 		return
 	}
 
-	// 使用 fileID 获取文件名
+	// Use fileID to get the file name
 	fileName, ok := fileNames[fileID]
 	if !ok {
 		http.Error(w, "Invalid file ID", http.StatusBadRequest)
 		return
 	}
 
-	// 生成文件路径，保留文件扩展名
+	// Generate file paths, preserving file extensions
 	filePath := filepath.Join("uploads", fileName)
-	// 创建文件夹（如果不存在）
+	// Create the folder if it does not exist
 	dir := filepath.Dir(filePath)
 	err := os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
@@ -82,7 +82,7 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error creating directory:", err)
 		return
 	}
-	// 创建文件
+	// Create a file
 	file, err := os.Create(filePath)
 	if err != nil {
 		http.Error(w, "Failed to create file", http.StatusInternalServerError)
@@ -91,7 +91,7 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	buffer := make([]byte, 2*1024*1024) // 2MB 缓冲区
+	buffer := make([]byte, 2*1024*1024) // 2MB buffer
 	for {
 		n, err := r.Body.Read(buffer)
 		if err != nil && err != io.EOF {
@@ -117,7 +117,7 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// ReceiveHandler 处理文件下载请求
+// ReceiveHandler handles file download requests
 func NormalReceiveHandler(w http.ResponseWriter, r *http.Request) {
 	fileName := r.URL.Query().Get("file")
 	if fileName == "" {
@@ -125,7 +125,7 @@ func NormalReceiveHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 假设文件存储在 "uploads" 目录中
+	// Assuming the files are stored in the "uploads" directory
 	filePath := filepath.Join("uploads", fileName)
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -134,11 +134,11 @@ func NormalReceiveHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	// 设置响应头
+	// Setting the response header
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s\"", fileName))
 	w.Header().Set("Content-Type", "application/octet-stream")
 
-	// 将文件内容写入响应
+	// Write the file contents to the response
 	_, err = io.Copy(w, file)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Could not write file to response: %v", err), http.StatusInternalServerError)

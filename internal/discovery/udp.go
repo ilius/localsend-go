@@ -9,9 +9,9 @@ import (
 	"time"
 )
 
-// StartBroadcast 发送广播消息
+// StartBroadcast sends a broadcast message
 func StartBroadcast() {
-	// 设置多播地址和端口
+	// Set the multicast address and port
 	multicastAddr := &net.UDPAddr{
 		IP:   net.ParseIP("224.0.0.167"),
 		Port: 53317,
@@ -21,7 +21,7 @@ func StartBroadcast() {
 	if err != nil {
 		panic(err)
 	}
-	// 创建本地地址，绑定到所有接口
+	// Create a local address and bind it to all interfaces
 	localAddr := &net.UDPAddr{
 		IP:   net.IPv4zero,
 		Port: 0,
@@ -41,28 +41,28 @@ func StartBroadcast() {
 		// fmt.Println(num, "bytes write to multicastAddr")
 		//log
 		// fmt.Println("UDP Broadcast message sent!")
-		time.Sleep(5 * time.Second) // 每5秒发送一次广播消息
+		time.Sleep(5 * time.Second) // Send a broadcast message every 5 seconds
 	}
 }
 
-// ListenForBroadcasts 监听UDP广播消息
+// ListenForBroadcasts listens for UDP broadcast messages
 func ListenForBroadcasts() {
 	fmt.Println("Listening for broadcasts...")
 
-	// 设置多播地址和端口
+	// Set the multicast address and port
 	multicastAddr := &net.UDPAddr{
 		IP:   net.ParseIP("224.0.0.167"),
 		Port: 53317,
 	}
 
-	// 创建 UDP 多播监听连接
+	// Create a UDP multicast listening connection
 	conn, err := net.ListenMulticastUDP("udp", nil, multicastAddr)
 	if err != nil {
 		panic(err)
 	}
 	defer conn.Close()
 
-	// 设置读取缓冲区大小
+	// Set the read buffer size
 	conn.SetReadBuffer(1024)
 
 	for {

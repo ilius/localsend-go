@@ -26,11 +26,11 @@ func init() {
 	var bytes []byte
 	var err error
 
-	// 尝试从外部文件系统读取配置文件
+	// Try to read configuration files from external file system
 	bytes, err = os.ReadFile("internal/config/config.yaml")
 	if err != nil {
 		fmt.Println("读取外部配置文件失败，使用内置配置")
-		// 如果读取外部文件失败，则从嵌入文件系统读取
+		// If reading the external file fails, read from the embedded file system
 		bytes, err = EmbeddedConfig.ReadFile("config.yaml")
 		if err != nil {
 			log.Fatalf("Error reading embedded config file: %v", err)

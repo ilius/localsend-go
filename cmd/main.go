@@ -19,28 +19,28 @@ func main() {
 	toDevice := flag.String("to", "", "Send file to Device ip,Write device receiver ip here")
 	flag.Parse()
 
-	// // 启动广播和监听功能
+	// Enable broadcast and monitoring functions
 	go discovery.ListenForBroadcasts()
 	go discovery.StartBroadcast()
 	go discovery.StartHTTPBroadcast() // 启动HTTP广播
 
-	// 启动HTTP服务器
+	// Start HTTP Server
 	httpServer := server.New()
 	if config.ConfigData.Functions.HttpFileServer {
 
-		//如果启用http文件服务器，启用下面的路由
+		// If you enable the http file server, enable the following routes
 		httpServer.HandleFunc("/", handlers.IndexFileHandler)
 		httpServer.HandleFunc("/uploads/", handlers.FileServerHandler)
 		httpServer.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.FS(static.EmbeddedStaticFiles))))
 	}
-	/*发送接收部分*/
+	// Send and receive part
 	if config.ConfigData.Functions.LocalSendServer {
 
 		httpServer.HandleFunc("/api/localsend/v2/prepare-upload", handlers.PrepareReceive)
 		httpServer.HandleFunc("/api/localsend/v2/upload", handlers.ReceiveHandler)
 		httpServer.HandleFunc("/api/localsend/v2/info", handlers.GetInfoHandler)
-		httpServer.HandleFunc("/send", handlers.NormalSendHandler)       // 上传处理程序
-		httpServer.HandleFunc("/receive", handlers.NormalReceiveHandler) // 下载处理程序
+		httpServer.HandleFunc("/send", handlers.NormalSendHandler)       // Upload Handler
+		httpServer.HandleFunc("/receive", handlers.NormalReceiveHandler) // Download Handler
 
 	}
 	go func() {
@@ -71,7 +71,7 @@ func main() {
 		// }
 	case "receive":
 		fmt.Println("Waiting to receive files...")
-		select {} // 阻塞程序等待接收文件
+		select {} // Blocking program waiting to receive file
 	default:
 		flag.Usage()
 		os.Exit(1)
@@ -80,6 +80,6 @@ func main() {
 
 func sendFile(filePath string) error {
 	fmt.Println("Sending file:", filePath)
-	// 上传文件的逻辑
+	// Logic for uploading files
 	return nil
 }

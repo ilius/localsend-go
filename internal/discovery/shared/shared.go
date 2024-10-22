@@ -7,7 +7,7 @@ import (
 	"sync"
 )
 
-// 全局设备记录哈希表和互斥锁,Message信息
+// Global device record hash table and mutex, Message information
 
 var DiscoveredDevices = make(map[string]BroadcastMessage)
 var Mu sync.Mutex
@@ -17,7 +17,7 @@ var Messsage BroadcastMessage = BroadcastMessage{
 	Alias:       config.ConfigData.NameOfDevice,
 	Version:     "2.0",
 	DeviceModel: utils.CheckOSType(),
-	DeviceType:  "headless", // 表示是没有gui的情况下运行
+	DeviceType:  "headless", // Indicates that it is running without GUI
 	Fingerprint: "random-string",
 	Port:        53317,
 	Protocol:    "http",

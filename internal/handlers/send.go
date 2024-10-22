@@ -15,9 +15,8 @@ import (
 	"time"
 )
 
-// SendFileToOtherDevicePrepare 函数
 func SendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiveResponse, error) {
-	// 准备所有文件的元数据
+	// Prepare metadata for all files
 	files := make(map[string]models.FileInfo)
 	err := filepath.Walk(path, func(filePath string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -29,7 +28,7 @@ func SendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiv
 				return fmt.Errorf("error calculating SHA256 hash: %w", err)
 			}
 			fileMetadata := models.FileInfo{
-				ID:       info.Name(), // 使用文件名作为 ID
+				ID:       info.Name(), // Use the file name as ID
 				FileName: info.Name(),
 				Size:     info.Size(),
 				FileType: filepath.Ext(filePath),
@@ -43,7 +42,7 @@ func SendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiv
 		return nil, fmt.Errorf("error walking the path: %w", err)
 	}
 
-	// 创建并填充 PrepareReceiveRequest 结构体
+	// Create and fill the PrepareReceiveRequest structure
 	request := models.PrepareReceiveRequest{
 		Info: models.Info{
 			Alias:       shared.Messsage.Alias,
@@ -58,19 +57,19 @@ func SendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiv
 		Files: files,
 	}
 
-	// 将请求结构体编码为JSON
+	// Encode the request structure as JSON
 	requestJson, err := json.Marshal(request)
 	if err != nil {
 		return nil, fmt.Errorf("error encoding request to JSON: %w", err)
 	}
 
-	// 发送POST请求
+	// Sending a POST request
 	url := fmt.Sprintf("https://%s:53317/api/localsend/v2/prepare-upload", ip)
 	client := &http.Client{
-		Timeout: 60 * time.Second, // 传输超时
+		Timeout: 60 * time.Second, // Transmission timeout
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{
-				InsecureSkipVerify: true, // 忽略TLS
+				InsecureSkipVerify: true, // Ignore TLS
 			},
 		},
 	}
@@ -80,7 +79,7 @@ func SendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiv
 	}
 	defer resp.Body.Close()
 
-	// 检查响应
+	// Check the response
 	if resp.StatusCode != http.StatusOK {
 		switch resp.StatusCode {
 		case 204:
@@ -95,7 +94,7 @@ func SendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiv
 		return nil, fmt.Errorf("failed to send metadata: received status code %d", resp.StatusCode)
 	}
 
-	// 解码响应JSON为PrepareReceiveResponse结构体
+	// Decode the response JSON into a PrepareReceiveResponse structure
 	var prepareReceiveResponse models.PrepareReceiveResponse
 	if err := json.NewDecoder(resp.Body).Decode(&prepareReceiveResponse); err != nil {
 		return nil, fmt.Errorf("error decoding response JSON: %w", err)
@@ -104,22 +103,21 @@ func SendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiv
 	return &prepareReceiveResponse, nil
 }
 
-// uploadFile 函数
 func uploadFile(ip, sessionId, fileId, token, filePath string) error {
-	// 打开要发送的文件
+	// Open the file you want to send
 	file, err := os.Open(filePath)
 	if err != nil {
 		return fmt.Errorf("error opening file: %w", err)
 	}
 	defer file.Close()
 
-	// 创建文件内容的请求体
+	// Create a request body with file content
 	var requestBody bytes.Buffer
 	if _, err := io.Copy(&requestBody, file); err != nil {
 		return fmt.Errorf("error copying file content: %w", err)
 	}
 
-	// 构建文件上传的 URL
+	// Constructing a URL for file upload
 	uploadURL := fmt.Sprintf("https://%s:53317/api/localsend/v2/upload?sessionId=%s&fileId=%s&token=%s",
 		ip, sessionId, fileId, token)
 	client := &http.Client{
@@ -140,7 +138,7 @@ func uploadFile(ip, sessionId, fileId, token, filePath string) error {
 	}
 	defer resp.Body.Close()
 
-	// 检查响应
+	// Check the response
 	if resp.StatusCode != http.StatusOK {
 		switch resp.StatusCode {
 		case 400:
@@ -159,7 +157,6 @@ func uploadFile(ip, sessionId, fileId, token, filePath string) error {
 	return nil
 }
 
-// SendFile 函数
 func SendFile(ip string, path string) error {
 	response, err := SendFileToOtherDevicePrepare(ip, path)
 	fmt.Println("response:", response)
@@ -167,14 +164,14 @@ func SendFile(ip string, path string) error {
 		return err
 	}
 
-	// 遍历目录和子文件
+	// Traversing directories and sub-files
 	err = filepath.Walk(path, func(filePath string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 		if !info.IsDir() {
-			// 获取 fileId 和 token
-			fileId := info.Name() // 使用文件名作为 fileId
+			// Get fileId and token
+			fileId := info.Name() // Use the file name as fileId
 			token, ok := response.Files[fileId]
 			if !ok {
 				return fmt.Errorf("token not found for file: %s", fileId)
@@ -193,15 +190,15 @@ func SendFile(ip string, path string) error {
 	return nil
 }
 
-// SendHandler 处理文件上传请求
+// SendHandler handles file upload requests
 func NormalSendHandler(w http.ResponseWriter, r *http.Request) {
-	// 解析 multipart/form-data
+	// Parsing multipart/form-data
 	if err := r.ParseMultipartForm(10 << 20); err != nil {
 		http.Error(w, fmt.Sprintf("Could not parse multipart form: %v", err), http.StatusBadRequest)
 		return
 	}
 
-	// 获取文件
+	// Get File
 	file, handler, err := r.FormFile("file")
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Could not get uploaded file: %v", err), http.StatusBadRequest)
@@ -209,14 +206,14 @@ func NormalSendHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	// 创建上传目录（如果不存在）
+	// Create the upload directory if it does not exist
 	uploadDir := "./uploads"
 	if err := os.MkdirAll(uploadDir, os.ModePerm); err != nil {
 		http.Error(w, fmt.Sprintf("Could not create upload directory: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	// 创建目标文件
+	// Creating a target file
 	filePath := filepath.Join(uploadDir, handler.Filename)
 	dst, err := os.Create(filePath)
 	if err != nil {
@@ -225,7 +222,7 @@ func NormalSendHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer dst.Close()
 
-	// 将上传的文件内容写入目标文件
+	// Write the uploaded file content to the target file
 	if _, err := io.Copy(dst, file); err != nil {
 		http.Error(w, fmt.Sprintf("Could not save file: %v", err), http.StatusInternalServerError)
 		return
