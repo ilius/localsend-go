@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"localsend_cli/pkg/config"
+	"github.com/ilius/localsend-go/pkg/config"
 )
 
 // UploadHandler handles file upload requests

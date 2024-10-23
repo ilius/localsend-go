@@ -12,9 +12,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"localsend_cli/pkg/discovery/shared"
-	"localsend_cli/pkg/models"
-	"localsend_cli/pkg/utils"
+	"github.com/ilius/localsend-go/pkg/discovery/shared"
+	"github.com/ilius/localsend-go/pkg/models"
+	"github.com/ilius/localsend-go/pkg/utils"
 )
 
 func sendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiveResponse, error) {

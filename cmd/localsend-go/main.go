@@ -7,12 +7,12 @@ import (
 	"net/http"
 	"os"
 
-	"localsend_cli/pkg/config"
-	"localsend_cli/pkg/discovery"
-	"localsend_cli/pkg/handlers"
-	"localsend_cli/pkg/send"
-	"localsend_cli/pkg/server"
-	"localsend_cli/pkg/static"
+	"github.com/ilius/localsend-go/pkg/config"
+	"github.com/ilius/localsend-go/pkg/discovery"
+	"github.com/ilius/localsend-go/pkg/handlers"
+	"github.com/ilius/localsend-go/pkg/send"
+	"github.com/ilius/localsend-go/pkg/server"
+	"github.com/ilius/localsend-go/pkg/static"
 )
 
 const (

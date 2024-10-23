@@ -3,9 +3,9 @@ package shared
 import (
 	"sync"
 
-	"localsend_cli/pkg/config"
-	. "localsend_cli/pkg/models"
-	"localsend_cli/pkg/utils"
+	"github.com/ilius/localsend-go/pkg/config"
+	. "github.com/ilius/localsend-go/pkg/models"
+	"github.com/ilius/localsend-go/pkg/utils"
 )
 
 // Global device record hash table and mutex, Message information

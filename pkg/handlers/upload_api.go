@@ -12,8 +12,8 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"localsend_cli/pkg/models"
-	"localsend_cli/pkg/utils"
+	"github.com/ilius/localsend-go/pkg/models"
+	"github.com/ilius/localsend-go/pkg/utils"
 )
 
 var (

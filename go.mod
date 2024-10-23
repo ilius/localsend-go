@@ -1,4 +1,4 @@
-module localsend_cli
+module github.com/ilius/localsend-go
 
 go 1.22
 

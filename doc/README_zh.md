@@ -15,8 +15,8 @@
 ### 克隆仓库
 
 ```sh
-git clone https://github.com/ilius/localsend_cli.git
-cd localsend_cli
+git clone https://github.com/ilius/localsend-go.git
+cd localsend-go
 ```
 
 ### 编译
@@ -36,23 +36,23 @@ make build
 #### 接收模式
 
 ```sh
-.\localsend_cli-windows-amd64.exe -mode receive
+.\localsend-go-windows-amd64.exe -mode receive
 ```
 
 根据你的操作系统和架构选择相应的二进制文件运行。
 Linux下需要执行这个命令，启用其ping功能
-`sudo setcap cap_net_raw=+ep localsend_cli`
+`sudo setcap cap_net_raw=+ep localsend-go`
 
 #### 发送模式
 
 ```
-.\localsend_cli-windows-amd64.exe -mode send -file ./xxxx.xx -to your_ip
+.\localsend-go-windows-amd64.exe -mode send -file ./xxxx.xx -to your_ip
 ```
 
 example:
 
 ```
-.\localsend_cli-windows-amd64.exe -mode send -file ./hello.tar.gz -to 192.168.3.199
+.\localsend-go-windows-amd64.exe -mode send -file ./hello.tar.gz -to 192.168.3.199
 ```
 
 ## 贡献
