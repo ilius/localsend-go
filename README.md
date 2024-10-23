@@ -1,12 +1,8 @@
-<div align="center">
-<h1>LocalSend CLI</h1>
-  <img src="doc/images/image.png" alt="LocalSend CLI logo" width="150" height="150">
-  <p>✨LocalSend CLI✨</p>
-</div>
+# LocalSend CLI
 
 ## Installation
 
-> 😊 You can download the executable files from the Releases.
+You can download executable files from the Releases.
 
 ### Prerequisites
 
@@ -15,8 +11,8 @@
 ### Clone the Repository
 
 ```sh
-git clone https://github.com/ilius/localsend_cli.git
-cd localsend_cli
+git clone https://github.com/ilius/localsend-go.git
+cd localsend-go
 ```
 
 ### Build
@@ -36,23 +32,23 @@ This will generate binary files for all supported platforms and save them in the
 #### Receive Mode
 
 ```sh
-.\localsend_cli-windows-amd64.exe -mode receive
+./localsend-go -mode receive
 ```
 
 Choose the appropriate binary file for your operating system and architecture.
 On Linux, you need to execute this command to enable its ping functionality:
-`sudo setcap cap_net_raw=+ep localsend_cli`
+`sudo setcap cap_net_raw=+ep localsend-go`
 
 #### Send Mode
 
 ```sh
-.\localsend_cli-windows-amd64.exe -mode send -file ./xxxx.xx -to your_ip
+./localsend-go -mode send -file FILE_PATH -to your_ip
 ```
 
 Example:
 
 ```sh
-.\localsend_cli-windows-amd64.exe -mode send -file ./hello.tar.gz -to 192.168.3.199
+./localsend-go -mode send -file ./hello.tar.gz -to 192.168.3.199
 ```
 
 ## Contribution
