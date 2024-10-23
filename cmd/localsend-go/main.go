@@ -15,14 +15,23 @@ import (
 	"localsend_cli/static"
 )
 
+const (
+	cmd_send    = "send"
+	cmd_receive = "receive"
+)
+
 func main() {
-	mode := flag.String("mode", "send", "Mode of operation: send or receive")
+	mode := flag.String(
+		"mode",
+		cmd_send,
+		"Mode of operation: "+cmd_send+" or "+cmd_receive,
+	)
 	filePath := flag.String("file", "", "Path to the file to upload")
 	toDevice := flag.String("to", "", "Send file to Device ip,Write device receiver ip here")
 	flag.Parse()
 
 	switch *mode {
-	case "send":
+	case cmd_send:
 		if *filePath == "" {
 			os.Stderr.WriteString("Send mode requires -file FILE_PATH\n")
 			flag.Usage()
@@ -33,7 +42,7 @@ func main() {
 			flag.Usage()
 			os.Exit(1)
 		}
-	case "receive":
+	case cmd_receive:
 	default:
 		flag.Usage()
 		os.Exit(1)
@@ -74,12 +83,12 @@ func main() {
 	}()
 
 	switch *mode {
-	case "send":
+	case cmd_send:
 		err := send.SendFile(*toDevice, *filePath)
 		if err != nil {
 			log.Fatalf("Send failed: %v", err)
 		}
-	case "receive":
+	case cmd_receive:
 		slog.Info("Waiting to receive files...")
 		select {} // Blocking program waiting to receive file
 	}
