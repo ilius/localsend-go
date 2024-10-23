@@ -66,6 +66,7 @@ func main() {
 			http.StripPrefix("/static/", http.FileServer(http.FS(static.EmbeddedStaticFiles))),
 		)
 	}
+
 	// Send and receive part
 	if config.ConfigData.Functions.LocalSendServer {
 		httpServer.HandleFunc("/api/localsend/v2/prepare-upload", handlers.PrepareUploadAPIHandler)
@@ -73,8 +74,8 @@ func main() {
 		httpServer.HandleFunc("/api/localsend/v2/info", handlers.GetInfoHandler)
 		httpServer.HandleFunc("/send", handlers.UploadHandler)
 		httpServer.HandleFunc("/receive", handlers.DownloadHandler)
-
 	}
+
 	go func() {
 		slog.Info("Server started at :53317")
 		if err := http.ListenAndServe(":53317", httpServer); err != nil {

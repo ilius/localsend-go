@@ -44,17 +44,19 @@ func sendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiv
 		return nil, fmt.Errorf("error walking the path: %w", err)
 	}
 
+	msg := shared.GetMesssage()
+
 	// Create and fill the PrepareReceiveRequest structure
 	request := models.PrepareReceiveRequest{
 		Info: models.Info{
-			Alias:       shared.Messsage.Alias,
-			Version:     shared.Messsage.Version,
-			DeviceModel: shared.Messsage.DeviceModel,
-			DeviceType:  shared.Messsage.DeviceType,
-			Fingerprint: shared.Messsage.Fingerprint,
-			Port:        shared.Messsage.Port,
-			Protocol:    shared.Messsage.Protocol,
-			Download:    shared.Messsage.Download,
+			Alias:       msg.Alias,
+			Version:     msg.Version,
+			DeviceModel: msg.DeviceModel,
+			DeviceType:  msg.DeviceType,
+			Fingerprint: msg.Fingerprint,
+			Port:        msg.Port,
+			Protocol:    msg.Protocol,
+			Download:    msg.Download,
 		},
 		Files: files,
 	}

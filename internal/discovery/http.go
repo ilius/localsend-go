@@ -101,8 +101,9 @@ func pingScan() ([]string, error) {
 
 // StartHTTPBroadcast sends HTTP requests to all IPs in the LAN
 func StartHTTPBroadcast() {
+	msg := shared.GetMesssage()
 	for {
-		data, err := json.Marshal(shared.Messsage)
+		data, err := json.Marshal(msg)
 		slog.Debug(string(data))
 		if err != nil {
 			panic(err)

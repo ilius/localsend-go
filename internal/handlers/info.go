@@ -9,7 +9,7 @@ import (
 )
 
 func GetInfoHandler(w http.ResponseWriter, r *http.Request) {
-	msg := shared.Messsage
+	msg := shared.GetMesssage()
 	res, err := json.Marshal(msg)
 	if err != nil {
 		slog.Error("json convert failed:", "err", err)

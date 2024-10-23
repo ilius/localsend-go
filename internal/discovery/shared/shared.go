@@ -26,14 +26,16 @@ func AddDiscoveredDevice(ip string, msg *BroadcastMessage) bool {
 }
 
 // https://github.com/localsend/protocol?tab=readme-ov-file#71-device-type
-var Messsage BroadcastMessage = BroadcastMessage{
-	Alias:       config.ConfigData.NameOfDevice,
-	Version:     "2.0",
-	DeviceModel: utils.OSType(),
-	DeviceType:  "headless", // Indicates that it is running without GUI
-	Fingerprint: "random-string",
-	Port:        53317,
-	Protocol:    "http",
-	Download:    true,
-	Announce:    true,
+func GetMesssage() BroadcastMessage {
+	return BroadcastMessage{
+		Alias:       config.ConfigData.NameOfDevice,
+		Version:     "2.0",
+		DeviceModel: utils.OSType(),
+		DeviceType:  "headless", // Indicates that it is running without GUI
+		Fingerprint: "random-string",
+		Port:        53317,
+		Protocol:    "http",
+		Download:    true,
+		Announce:    true,
+	}
 }

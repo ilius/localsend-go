@@ -18,7 +18,8 @@ func StartBroadcast() {
 		Port: 53317,
 	}
 
-	data, err := json.Marshal(shared.Messsage)
+	msg := shared.GetMesssage()
+	data, err := json.Marshal(msg)
 	if err != nil {
 		panic(err)
 	}
