@@ -21,6 +21,26 @@ func main() {
 	toDevice := flag.String("to", "", "Send file to Device ip,Write device receiver ip here")
 	flag.Parse()
 
+	switch *mode {
+	case "send":
+		if *filePath == "" {
+			os.Stderr.WriteString("Send mode requires -file FILE_PATH\n")
+			flag.Usage()
+			os.Exit(1)
+		}
+		if *toDevice == "" {
+			os.Stderr.WriteString("Send mode requires -to DEVICE_IP\n")
+			flag.Usage()
+			os.Exit(1)
+		}
+	case "receive":
+	default:
+		flag.Usage()
+		os.Exit(1)
+	}
+
+	config.Init()
+
 	// Enable broadcast and monitoring functions
 	go discovery.ListenForBroadcasts()
 	go discovery.StartBroadcast()
@@ -55,16 +75,6 @@ func main() {
 
 	switch *mode {
 	case "send":
-		if *filePath == "" {
-			slog.Info("Send mode requires a file path")
-			flag.Usage()
-			os.Exit(1)
-		}
-		if *toDevice == "" {
-			slog.Info("Send mode requires a toDevice")
-			flag.Usage()
-			os.Exit(1)
-		}
 		err := send.SendFile(*toDevice, *filePath)
 		if err != nil {
 			log.Fatalf("Send failed: %v", err)
@@ -72,8 +82,5 @@ func main() {
 	case "receive":
 		slog.Info("Waiting to receive files...")
 		select {} // Blocking program waiting to receive file
-	default:
-		flag.Usage()
-		os.Exit(1)
 	}
 }

@@ -49,7 +49,7 @@ func GetConfigDir() string {
 	return platformConfigDir()
 }
 
-func init() {
+func Init() {
 	var bytes []byte
 	var err error
 
