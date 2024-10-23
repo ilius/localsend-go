@@ -12,7 +12,7 @@ import (
 	"localsend_cli/pkg/handlers"
 	"localsend_cli/pkg/send"
 	"localsend_cli/pkg/server"
-	"localsend_cli/static"
+	"localsend_cli/pkg/static"
 )
 
 const (
