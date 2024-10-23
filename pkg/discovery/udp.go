@@ -6,8 +6,8 @@ import (
 	"net"
 	"time"
 
-	"localsend_cli/internal/discovery/shared"
-	"localsend_cli/internal/models"
+	"localsend_cli/pkg/discovery/shared"
+	"localsend_cli/pkg/models"
 )
 
 // StartBroadcast sends a broadcast message

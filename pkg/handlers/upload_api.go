@@ -12,8 +12,8 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"localsend_cli/internal/models"
-	"localsend_cli/internal/utils"
+	"localsend_cli/pkg/models"
+	"localsend_cli/pkg/utils"
 )
 
 var (

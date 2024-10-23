@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"localsend_cli/internal/config"
+	"localsend_cli/pkg/config"
 )
 
 // UploadHandler handles file upload requests

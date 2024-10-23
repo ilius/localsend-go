@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	"localsend_cli/internal/discovery/shared"
+	"localsend_cli/pkg/discovery/shared"
 )
 
 func GetInfoHandler(w http.ResponseWriter, r *http.Request) {

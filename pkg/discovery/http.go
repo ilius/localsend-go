@@ -13,8 +13,8 @@ import (
 	"sync"
 	"time"
 
-	"localsend_cli/internal/discovery/shared"
-	"localsend_cli/internal/models"
+	"localsend_cli/pkg/discovery/shared"
+	"localsend_cli/pkg/models"
 
 	probing "github.com/prometheus-community/pro-bing"
 )

@@ -3,9 +3,9 @@ package shared
 import (
 	"sync"
 
-	"localsend_cli/internal/config"
-	. "localsend_cli/internal/models"
-	"localsend_cli/internal/utils"
+	"localsend_cli/pkg/config"
+	. "localsend_cli/pkg/models"
+	"localsend_cli/pkg/utils"
 )
 
 // Global device record hash table and mutex, Message information

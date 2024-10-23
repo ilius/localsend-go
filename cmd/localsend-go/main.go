@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"os"
 
-	"localsend_cli/internal/config"
-	"localsend_cli/internal/discovery"
-	"localsend_cli/internal/handlers"
-	"localsend_cli/internal/pkg/server"
-	"localsend_cli/internal/send"
+	"localsend_cli/pkg/config"
+	"localsend_cli/pkg/discovery"
+	"localsend_cli/pkg/handlers"
+	"localsend_cli/pkg/pkg/server"
+	"localsend_cli/pkg/send"
 	"localsend_cli/static"
 )
 
