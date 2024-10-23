@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"localsend_cli/templates"
+	"localsend_cli/pkg/templates"
 )
 
 const uploadDir = "./uploads"
