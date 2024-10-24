@@ -21,30 +21,32 @@ const (
 )
 
 func main() {
-	mode := flag.String(
+	flagSet := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
+
+	mode := flagSet.String(
 		"mode",
 		cmd_send,
 		"Mode of operation: "+cmd_send+" or "+cmd_receive,
 	)
-	filePath := flag.String("file", "", "Path to the file to upload")
-	toDevice := flag.String("to", "", "Send file to Device ip,Write device receiver ip here")
-	flag.Parse()
+	filePath := flagSet.String("file", "", "Path to the file to upload")
+	toDevice := flagSet.String("to", "", "Send file to Device ip,Write device receiver ip here")
+	flagSet.Parse(os.Args[1:])
 
 	switch *mode {
 	case cmd_send:
 		if *filePath == "" {
 			os.Stderr.WriteString("Send mode requires -file FILE_PATH\n")
-			flag.Usage()
+			flagSet.Usage()
 			os.Exit(1)
 		}
 		if *toDevice == "" {
 			os.Stderr.WriteString("Send mode requires -to DEVICE_IP\n")
-			flag.Usage()
+			flagSet.Usage()
 			os.Exit(1)
 		}
 	case cmd_receive:
 	default:
-		flag.Usage()
+		flagSet.Usage()
 		os.Exit(1)
 	}
 
