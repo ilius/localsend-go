@@ -13,6 +13,7 @@ import (
 	"github.com/ilius/localsend-go/pkg/send"
 	"github.com/ilius/localsend-go/pkg/server"
 	"github.com/ilius/localsend-go/pkg/static"
+	"github.com/ilius/localsend-go/pkg/xflag"
 )
 
 const (
@@ -30,7 +31,12 @@ func main() {
 	)
 	filePath := flagSet.String("file", "", "Path to the file to upload")
 	toDevice := flagSet.String("to", "", "Send file to Device ip,Write device receiver ip here")
-	flagSet.Parse(os.Args[1:])
+
+	err := xflag.ParseToEnd(flagSet, os.Args[1:])
+	if err != nil {
+		os.Stderr.WriteString(err.Error() + "\n")
+		os.Exit(1)
+	}
 
 	switch *mode {
 	case cmd_send:
