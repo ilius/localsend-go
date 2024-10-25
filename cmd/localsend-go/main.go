@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/fatih/color"
+	"github.com/ilius/go-color"
 	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/discovery"
 	"github.com/ilius/localsend-go/pkg/handlers"

@@ -3,7 +3,7 @@ package slogcolor
 import (
 	"strings"
 
-	"github.com/fatih/color"
+	"github.com/ilius/go-color"
 )
 
 // Prefix prepends a colored prefix to msg.

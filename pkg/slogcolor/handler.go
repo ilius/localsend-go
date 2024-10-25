@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/fatih/color"
+	"github.com/ilius/go-color"
 )
 
 type Handler struct {

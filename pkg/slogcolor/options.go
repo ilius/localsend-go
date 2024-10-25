@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/fatih/color"
+	"github.com/ilius/go-color"
 )
 
 var DefaultOptions *Options = &Options{
