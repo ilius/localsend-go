@@ -9,3 +9,7 @@ clipboard = false
 [functions]
 http_file_server = true
 local_send_server = true
+
+[logging]
+no_color = false
+level = "info"

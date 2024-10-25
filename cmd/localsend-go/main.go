@@ -6,15 +6,12 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/discovery"
-	"github.com/ilius/localsend-go/pkg/go-color"
 	"github.com/ilius/localsend-go/pkg/handlers"
 	"github.com/ilius/localsend-go/pkg/send"
 	"github.com/ilius/localsend-go/pkg/server"
-	"github.com/ilius/localsend-go/pkg/slogcolor"
 	"github.com/ilius/localsend-go/pkg/static"
 )
 
@@ -24,24 +21,13 @@ const (
 )
 
 func main() {
-	{
-		handler := slogcolor.NewHandler(os.Stdout, &slogcolor.Options{
-			Level:         slog.LevelInfo,
-			TimeFormat:    time.DateTime,
-			SrcFileMode:   slogcolor.ShortFile,
-			SrcFileLength: 0,
-			// MsgPrefix:     color.HiWhiteString("| "),
-			MsgLength: 0,
-			MsgColor:  color.New(),
-			NoColor:   os.Getenv("NO_COLOLR") != "",
-		})
-		logger := slog.New(handler)
-		slog.SetDefault(logger)
-		defer func() {
-			r := recover()
-			logger.Error(fmt.Sprintf("%v", r))
-		}()
-	}
+	defer func() {
+		r := recover()
+		slog.Error(fmt.Sprintf("%v", r))
+	}()
+
+	noColor := os.Getenv("NO_COLOLR") != ""
+	setupLogger(noColor, defaultLevel)
 
 	flagSet := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
 
@@ -77,6 +63,7 @@ func main() {
 	}
 
 	config.Init()
+	setupLoggerAfterConfigLoad(noColor)
 
 	// Enable broadcast and monitoring functions
 	go discovery.ListenForBroadcasts()

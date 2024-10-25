@@ -29,6 +29,10 @@ type Config struct {
 		HttpFileServer  bool `toml:"http_file_server"`
 		LocalSendServer bool `toml:"local_send_server"`
 	} `toml:"functions"`
+	Logging struct {
+		NoColor bool   `toml:"no_color"`
+		Level   string `toml:"level"`
+	} `toml:"logging"`
 }
 
 var ConfigData Config
