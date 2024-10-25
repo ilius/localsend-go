@@ -33,7 +33,7 @@ func main() {
 			// MsgPrefix:     color.HiWhiteString("| "),
 			MsgLength: 0,
 			MsgColor:  color.New(),
-			NoColor:   false,
+			NoColor:   os.Getenv("NO_COLOLR") != "",
 		})
 		logger := slog.New(handler)
 		slog.SetDefault(logger)
