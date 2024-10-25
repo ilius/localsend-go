@@ -18,14 +18,15 @@ func WriteToClipBoard(text string) {
 		} else {
 			slog.Info("Text copied to clipboard on Linux!")
 		}
-	case "windows":
-		cmd := exec.Command("cmd", "/c", "echo "+text+" | clip")
-		err := cmd.Run()
-		if err != nil {
-			slog.Error("Error copying to clipboard on Windows", "err", err)
-		} else {
-			slog.Info("Text copied to clipboard on Windows!")
-		}
+	// case "windows":
+	//  // THIS IS INSECURE! It basically allows Remote Code Execution
+	// 	cmd := exec.Command("cmd", "/c", "echo "+text+" | clip")
+	// 	err := cmd.Run()
+	// 	if err != nil {
+	// 		slog.Error("Error copying to clipboard on Windows", "err", err)
+	// 	} else {
+	// 		slog.Info("Text copied to clipboard on Windows!")
+	// 	}
 	case "darwin":
 		cmd := exec.Command("pbcopy")
 		cmd.Stdin = strings.NewReader(text)
