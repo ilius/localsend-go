@@ -4,8 +4,7 @@ func New() *impl {
 	return &impl{}
 }
 
-type impl struct {
-}
+type impl struct{}
 
 func (*impl) Adjectives() []string {
 	return adjectives

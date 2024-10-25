@@ -85,7 +85,7 @@ func (lx *lexer) nextItem() item {
 			return item
 		default:
 			lx.state = lx.state(lx)
-			//fmt.Printf("     STATE %-24s  current: %-10s	stack: %s\n", lx.state, lx.current(), lx.stack)
+			// fmt.Printf("     STATE %-24s  current: %-10s	stack: %s\n", lx.state, lx.current(), lx.stack)
 		}
 	}
 }

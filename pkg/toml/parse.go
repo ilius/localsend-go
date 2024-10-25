@@ -120,7 +120,7 @@ func (p *parser) panicf(format string, v ...any) {
 
 func (p *parser) next() item {
 	it := p.lx.nextItem()
-	//fmt.Printf("ITEM %-18s line %-3d │ %q\n", it.typ, it.pos.Line, it.val)
+	// fmt.Printf("ITEM %-18s line %-3d │ %q\n", it.typ, it.pos.Line, it.val)
 	if it.typ == itemError {
 		if it.err != nil {
 			panic(ParseError{
@@ -410,12 +410,10 @@ func missingLeadingZero(d, l string) bool {
 func (p *parser) valueArray(it item) (any, tomlType) {
 	p.setType(p.currentKey, tomlArray, it.pos)
 
-	var (
-		// Initialize to a non-nil slice to make it consistent with how S = []
-		// decodes into a non-nil slice inside something like struct { S
-		// []string }. See #338
-		array = make([]any, 0, 2)
-	)
+	// Initialize to a non-nil slice to make it consistent with how S = []
+	// decodes into a non-nil slice inside something like struct { S
+	// []string }. See #338
+	array := make([]any, 0, 2)
 	for it = p.next(); it.typ != itemArrayEnd; it = p.next() {
 		if it.typ == itemCommentStart {
 			p.expect(itemText)
