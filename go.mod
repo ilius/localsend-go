@@ -4,6 +4,7 @@ go 1.22
 
 require (
 	github.com/BurntSushi/toml v1.4.0
+	github.com/atotto/clipboard v0.1.4
 	github.com/prometheus-community/pro-bing v0.4.1
 	golang.org/x/sys v0.26.0
 )
