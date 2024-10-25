@@ -12,6 +12,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/models"
 	"github.com/ilius/localsend-go/pkg/utils"
 )
@@ -45,7 +46,9 @@ func PrepareUploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 		if strings.HasSuffix(fileInfo.FileName, ".txt") {
 			slog.Info("TXT file content preview", "preview", string(fileInfo.Preview))
-			utils.WriteToClipBoard(fileInfo.Preview)
+			if config.ConfigData.Receive.Clipboard {
+				utils.WriteToClipBoard(fileInfo.Preview)
+			}
 		}
 	}
 

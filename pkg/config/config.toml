@@ -3,6 +3,7 @@ name = "Server"
 [receive]
 saveUserID = 0
 saveGroupID = 0
+clipboard = false
 
 [functions]
 http_file_server = true
