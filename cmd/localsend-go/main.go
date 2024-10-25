@@ -6,12 +6,15 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
+	"github.com/fatih/color"
 	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/discovery"
 	"github.com/ilius/localsend-go/pkg/handlers"
 	"github.com/ilius/localsend-go/pkg/send"
 	"github.com/ilius/localsend-go/pkg/server"
+	"github.com/ilius/localsend-go/pkg/slogcolor"
 	"github.com/ilius/localsend-go/pkg/static"
 )
 
@@ -21,6 +24,25 @@ const (
 )
 
 func main() {
+	{
+		handler := slogcolor.NewHandler(os.Stdout, &slogcolor.Options{
+			Level:         slog.LevelInfo,
+			TimeFormat:    time.DateTime,
+			SrcFileMode:   slogcolor.ShortFile,
+			SrcFileLength: 0,
+			// MsgPrefix:     color.HiWhiteString("| "),
+			MsgLength: 0,
+			MsgColor:  color.New(),
+			NoColor:   false,
+		})
+		logger := slog.New(handler)
+		slog.SetDefault(logger)
+		defer func() {
+			r := recover()
+			logger.Error("Panic", "r", r)
+		}()
+	}
+
 	flagSet := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
 
 	mode := flagSet.String(
