@@ -19,76 +19,6 @@ type MetaData struct {
 	data    []byte // Input file; for errors.
 }
 
-// IsDefined reports if the key exists in the TOML data.
-//
-// The key should be specified hierarchically, for example to access the TOML
-// key "a.b.c" you would use IsDefined("a", "b", "c"). Keys are case sensitive.
-//
-// Returns false for an empty key.
-func (md *MetaData) IsDefined(key ...string) bool {
-	if len(key) == 0 {
-		return false
-	}
-
-	var (
-		hash      map[string]any
-		ok        bool
-		hashOrVal any = md.mapping
-	)
-	for _, k := range key {
-		if hash, ok = hashOrVal.(map[string]any); !ok {
-			return false
-		}
-		if hashOrVal, ok = hash[k]; !ok {
-			return false
-		}
-	}
-	return true
-}
-
-// Type returns a string representation of the type of the key specified.
-//
-// Type will return the empty string if given an empty key or a key that does
-// not exist. Keys are case sensitive.
-func (md *MetaData) Type(key ...string) string {
-	if ki, ok := md.keyInfo[Key(key).String()]; ok {
-		return ki.tomlType.typeString()
-	}
-	return ""
-}
-
-// Keys returns a slice of every key in the TOML data, including key groups.
-//
-// Each key is itself a slice, where the first element is the top of the
-// hierarchy and the last is the most specific. The list will have the same
-// order as the keys appeared in the TOML data.
-//
-// All keys returned are non-empty.
-func (md *MetaData) Keys() []Key {
-	return md.keys
-}
-
-// Undecoded returns all keys that have not been decoded in the order in which
-// they appear in the original TOML document.
-//
-// This includes keys that haven't been decoded because of a [Primitive] value.
-// Once the Primitive value is decoded, the keys will be considered decoded.
-//
-// Also note that decoding into an empty interface will result in no decoding,
-// and so no keys will be considered decoded.
-//
-// In this sense, the Undecoded keys correspond to keys in the TOML document
-// that do not have a concrete type in your representation.
-func (md *MetaData) Undecoded() []Key {
-	undecoded := make([]Key, 0, len(md.keys))
-	for _, key := range md.keys {
-		if _, ok := md.decoded[key.String()]; !ok {
-			undecoded = append(undecoded, key)
-		}
-	}
-	return undecoded
-}
-
 // Key represents any TOML key, including key groups. Use [MetaData.Keys] to get
 // values of this type.
 type Key []string
@@ -118,19 +48,6 @@ outer:
 		}
 	}
 	return b.String()
-}
-
-func (k Key) maybeQuoted(i int) string {
-	if k[i] == "" {
-		return `""`
-	}
-	for _, r := range k[i] {
-		if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') || r == '_' || r == '-' {
-			continue
-		}
-		return `"` + dblQuotedReplacer.Replace(k[i]) + `"`
-	}
-	return k[i]
 }
 
 // Like append(), but only increase the cap by 1.

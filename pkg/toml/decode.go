@@ -319,9 +319,7 @@ func (md *MetaData) unifyMap(mapping any, rv reflect.Value) error {
 
 	tmap, ok := mapping.(map[string]any)
 	if !ok {
-		if tmap == nil {
-			return nil
-		}
+		// bug in the library? always returned in this line!
 		return md.badtype("map", mapping)
 	}
 	if rv.IsNil() {

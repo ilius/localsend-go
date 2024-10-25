@@ -410,7 +410,7 @@ func lexTableNameEnd(lx *lexer) stateFn {
 // Lexes only one part, e.g. only 'a' inside 'a.b'.
 func lexBareName(lx *lexer) stateFn {
 	r := lx.next()
-	if isBareKeyChar(r, lx.tomlNext) {
+	if isBareKeyChar(r) {
 		return lexBareName
 	}
 	lx.backup()
@@ -1264,7 +1264,7 @@ func isDigit(r rune) bool  { return r >= '0' && r <= '9' }
 func isBinary(r rune) bool { return r == '0' || r == '1' }
 func isOctal(r rune) bool  { return r >= '0' && r <= '7' }
 func isHex(r rune) bool    { return (r >= '0' && r <= '9') || (r|0x20 >= 'a' && r|0x20 <= 'f') }
-func isBareKeyChar(r rune, tomlNext bool) bool {
+func isBareKeyChar(r rune) bool {
 	return (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') ||
 		(r >= '0' && r <= '9') || r == '_' || r == '-'
 }
