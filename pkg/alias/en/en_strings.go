@@ -3,7 +3,7 @@ package en
 // From:
 // https://github.com/localsend/localsend/blob/main/app/lib/gen/strings_en.g.dart
 
-var Adjectives = []string{
+var adjectives = []string{
 	"Adorable",
 	"Beautiful",
 	"Big",
@@ -44,7 +44,7 @@ var Adjectives = []string{
 	"Wise",
 }
 
-var Fruits = []string{
+var fruits = []string{
 	"Apple",
 	"Avocado",
 	"Banana",

@@ -18,6 +18,7 @@ var EmbeddedConfig embed.FS
 
 type Config struct {
 	NameOfDevice string `toml:"name"`
+	NameLanguage string `toml:"name_language"`
 	Receive      struct {
 		SaveUserID  int  `toml:"saveUserID"`
 		SaveGroupID int  `toml:"saveGroupID"`
@@ -78,7 +79,7 @@ func Init() {
 	}
 	slog.Info("Loaded user config file", "configData", ConfigData)
 	if ConfigData.NameOfDevice == "" {
-		name := alias.GenerateRandomAlias()
+		name := alias.GenerateRandomAlias(ConfigData.NameLanguage)
 		slog.Info("Using random name/alias: ", "name", name)
 		ConfigData.NameOfDevice = name
 	}
