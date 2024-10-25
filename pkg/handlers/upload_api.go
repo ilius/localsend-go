@@ -12,8 +12,8 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/ilius/go-clipboard"
 	"github.com/ilius/localsend-go/pkg/config"
+	"github.com/ilius/localsend-go/pkg/go-clipboard"
 	"github.com/ilius/localsend-go/pkg/models"
 )
 

@@ -1,7 +1,5 @@
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/ilius/go-clipboard v0.0.0-20241025121740-de6acc31af9d h1:9eMAhomgsY54/RnOI8Vj+XPcjQzbxvOzag6whQ+Aopo=
-github.com/ilius/go-clipboard v0.0.0-20241025121740-de6acc31af9d/go.mod h1:KEW3uTqJ9vbVwnKBbikZJhFhZNEjVQUM9eT5yS51iTU=
 github.com/prometheus-community/pro-bing v0.4.1 h1:aMaJwyifHZO0y+h8+icUz0xbToHbia0wdmzdVZ+Kl3w=
 github.com/prometheus-community/pro-bing v0.4.1/go.mod h1:aLsw+zqCaDoa2RLVVSX3+UiCkBBXTMtZC3c7EkfWnAE=
 golang.org/x/net v0.30.0 h1:AcW1SDZMkb8IpzCdQUaIq2sP4sZ4zw+55h6ynffypl4=

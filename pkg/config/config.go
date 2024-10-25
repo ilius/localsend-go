@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/ilius/go-clipboard"
 	"github.com/ilius/localsend-go/pkg/alias"
+	"github.com/ilius/localsend-go/pkg/go-clipboard"
 	"github.com/ilius/localsend-go/pkg/toml"
 )
 
