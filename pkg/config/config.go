@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/BurntSushi/toml"
+	"github.com/ilius/localsend-go/pkg/toml"
 )
 
 const fileName = "config.toml"
