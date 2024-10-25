@@ -1,3 +1,4 @@
 bin
 uploads
 cmd/localsend-go/localsend-go*
+mod.svg
