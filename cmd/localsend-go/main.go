@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"log"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
@@ -39,7 +39,7 @@ func main() {
 		slog.SetDefault(logger)
 		defer func() {
 			r := recover()
-			logger.Error("Panic", "r", r)
+			logger.Error(fmt.Sprintf("%v", r))
 		}()
 	}
 
@@ -107,7 +107,7 @@ func main() {
 	go func() {
 		slog.Info("Server started at :53317")
 		if err := http.ListenAndServe(":53317", httpServer); err != nil {
-			log.Fatalf("Server failed: %v", err)
+			panic(fmt.Sprintf("Server failed: %v", err))
 		}
 	}()
 
@@ -115,7 +115,7 @@ func main() {
 	case cmd_send:
 		err := send.SendFile(*toDevice, *filePath)
 		if err != nil {
-			log.Fatalf("Send failed: %v", err)
+			slog.Error("Send failed", "err", err)
 		}
 	case cmd_receive:
 		slog.Info("Waiting to receive files...")
