@@ -1,4 +1,4 @@
-name = "Server"
+name = ""
 
 [receive]
 saveUserID = 0

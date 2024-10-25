@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/ilius/localsend-go/pkg/alias"
 	"github.com/ilius/localsend-go/pkg/toml"
 )
 
@@ -76,4 +77,9 @@ func Init() {
 		panic(fmt.Sprintf("Error parsing config file: %v", err))
 	}
 	slog.Info("Loaded user config file", "configData", ConfigData)
+	if ConfigData.NameOfDevice == "" {
+		name := alias.GenerateRandomAlias()
+		slog.Info("Using random name/alias: ", "name", name)
+		ConfigData.NameOfDevice = name
+	}
 }
