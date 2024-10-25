@@ -2,10 +2,6 @@ github.com/BurntSushi/toml v1.4.0 h1:kuoIxZQy2WRRk1pttg9asf+WVv6tWQuBNVmK8+nqPr0
 github.com/BurntSushi/toml v1.4.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/ilius/go-color v1.0.1 h1:uHKUEVtFYj6NDtePjRlfK1+hkoc7Iwj+fy6ebuLW/ss=
-github.com/ilius/go-color v1.0.1/go.mod h1:t6Efd512mMwObZvn1naoU6KBlcYoALklVnOHWMIp8HA=
-github.com/ilius/go-colorable v1.1.0 h1:IOovNya65d0Kru/oUTX8xZJL8SY3TK54ajLuAd5NUV0=
-github.com/ilius/go-colorable v1.1.0/go.mod h1:C+ica4o2vNsfE86XclwTF/+yxAC64YwmHwUwbvxMJjk=
 github.com/prometheus-community/pro-bing v0.4.1 h1:aMaJwyifHZO0y+h8+icUz0xbToHbia0wdmzdVZ+Kl3w=
 github.com/prometheus-community/pro-bing v0.4.1/go.mod h1:aLsw+zqCaDoa2RLVVSX3+UiCkBBXTMtZC3c7EkfWnAE=
 golang.org/x/net v0.30.0 h1:AcW1SDZMkb8IpzCdQUaIq2sP4sZ4zw+55h6ynffypl4=

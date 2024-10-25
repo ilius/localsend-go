@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/ilius/go-color"
+	"github.com/ilius/localsend-go/pkg/go-color"
 )
 
 var DefaultOptions *Options = &Options{
