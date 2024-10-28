@@ -63,26 +63,31 @@ func Init() {
 
 	configPath := filepath.Join(GetConfigDir(), fileName)
 
-	slog.Info("Trying to read user config file", "configPath", configPath)
+	// read from the embedded file system
+	{
+		bytes, err = EmbeddedConfig.ReadFile("config.toml")
+		if err != nil {
+			panic(fmt.Sprintf("Error reading embedded config file: %v", err))
+		}
+		err = toml.Unmarshal(bytes, &ConfigData)
+		if err != nil {
+			panic(fmt.Sprintf("Error parsing default config file: %v", err))
+		}
+	}
 
-	// Try to read configuration files from external file system
+	slog.Info("Trying to read user config file", "configPath", configPath)
 	bytes, err = os.ReadFile(configPath)
 	if err != nil {
 		if !os.IsNotExist(err) {
 			slog.Error("Failed to read external configuration file, using built-in configuration")
 		}
-		// If reading the external file fails, read from the embedded file system
-		bytes, err = EmbeddedConfig.ReadFile("config.toml")
+	} else {
+		err = toml.Unmarshal(bytes, &ConfigData)
 		if err != nil {
-			panic(fmt.Sprintf("Error reading embedded config file: %v", err))
+			panic(fmt.Sprintf("Error parsing config file: %v", err))
 		}
+		slog.Info("Loaded user config file", "configData", ConfigData)
 	}
-
-	err = toml.Unmarshal(bytes, &ConfigData)
-	if err != nil {
-		panic(fmt.Sprintf("Error parsing config file: %v", err))
-	}
-	slog.Info("Loaded user config file", "configData", ConfigData)
 	if ConfigData.NameOfDevice == "" {
 		name := alias.GenerateRandomAlias(ConfigData.NameLanguage)
 		slog.Info("Using random name/alias: ", "name", name)
