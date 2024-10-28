@@ -84,7 +84,7 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate file paths, preserving file extensions
-	filePath := filepath.Join("uploads", fileName)
+	filePath := filepath.Join(config.ConfigData.Receive.Directory, fileName)
 	// Create the folder if it does not exist
 	dir := filepath.Dir(filePath)
 	err := os.MkdirAll(dir, os.ModePerm)

@@ -2,6 +2,7 @@ name = ""
 name_language = "en"
 
 [receive]
+directory = "uploads"
 saveUserID = 0
 saveGroupID = 0
 clipboard = false
