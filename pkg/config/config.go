@@ -21,10 +21,11 @@ type Config struct {
 	NameOfDevice string `toml:"name"`
 	NameLanguage string `toml:"name_language"`
 	Receive      struct {
-		Directory   string `toml:"directory"`
-		SaveUserID  int    `toml:"save_user_id"`
-		SaveGroupID int    `toml:"save_group_id"`
-		Clipboard   bool   `toml:"clipboard"`
+		Directory          string `toml:"directory"`
+		SaveUserID         int    `toml:"save_user_id"`
+		SaveGroupID        int    `toml:"save_group_id"`
+		Clipboard          bool   `toml:"clipboard"`
+		ExitAfterFileCount int    `toml:"exit_after_file_count"`
 	} `toml:"receive"`
 	Functions struct {
 		HttpFileServer  bool `toml:"http_file_server"`

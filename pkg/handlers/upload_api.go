@@ -11,6 +11,7 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/go-clipboard"
@@ -21,6 +22,7 @@ var (
 	sessionIDCounter = &atomic.Int64{}
 	fileNames        = make(map[string]string) // To save the file name
 	fileNamesRWMutex sync.RWMutex
+	uploadCount      = &atomic.Int64{}
 )
 
 func PrepareUploadAPIHandler(w http.ResponseWriter, r *http.Request) {
@@ -126,4 +128,15 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 	slog.Info("Saved file", "filePath", filePath)
 	w.WriteHeader(http.StatusOK)
+
+	if config.ConfigData.Receive.ExitAfterFileCount > 0 {
+		count := int(uploadCount.Add(1))
+		if count >= config.ConfigData.Receive.ExitAfterFileCount {
+			slog.Info("Exiting due to max recieved file count reached")
+			go func() {
+				time.Sleep(100 * time.Millisecond)
+				os.Exit(0)
+			}()
+		}
+	}
 }
