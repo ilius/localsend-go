@@ -22,8 +22,8 @@ type Config struct {
 	NameLanguage string `toml:"name_language"`
 	Receive      struct {
 		Directory   string `toml:"directory"`
-		SaveUserID  int    `toml:"saveUserID"`  // change to: save_user_id
-		SaveGroupID int    `toml:"saveGroupID"` // change to: save_group_id
+		SaveUserID  int    `toml:"save_user_id"`
+		SaveGroupID int    `toml:"save_group_id"`
 		Clipboard   bool   `toml:"clipboard"`
 	} `toml:"receive"`
 	Functions struct {

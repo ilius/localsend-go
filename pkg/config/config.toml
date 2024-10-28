@@ -3,8 +3,8 @@ name_language = "en"
 
 [receive]
 directory = "uploads"
-saveUserID = 0
-saveGroupID = 0
+save_user_id = 0
+save_group_id = 0
 clipboard = false
 
 [functions]
