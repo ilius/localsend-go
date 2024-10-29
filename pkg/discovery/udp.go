@@ -15,7 +15,7 @@ import (
 func StartBroadcast(conf *config.Config) {
 	// Set the multicast address and port
 	multicastAddr := &net.UDPAddr{
-		IP:   net.ParseIP("224.0.0.167"),
+		IP:   net.ParseIP(mulicastIP),
 		Port: 53317,
 	}
 
@@ -54,7 +54,7 @@ func ListenForBroadcasts() {
 
 	// Set the multicast address and port
 	multicastAddr := &net.UDPAddr{
-		IP:   net.ParseIP("224.0.0.167"),
+		IP:   net.ParseIP(mulicastIP),
 		Port: 53317,
 	}
 

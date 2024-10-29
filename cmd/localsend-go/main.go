@@ -73,7 +73,7 @@ func main() {
 	// Enable broadcast and monitoring functions
 	go discovery.ListenForBroadcasts()
 	go discovery.StartBroadcast(conf)
-	go discovery.StartHTTPBroadcast(conf) // Start HTTP Broadcast
+	go discovery.StartHTTPBroadcast(conf)
 
 	// Start HTTP Server
 	httpServer := server.New()
@@ -97,7 +97,7 @@ func main() {
 	}
 
 	go func() {
-		slog.Info("Server started at :53317")
+		slog.Info("Server starting on :53317")
 		if err := http.ListenAndServe(":53317", httpServer); err != nil {
 			panic(fmt.Sprintf("Server failed: %v", err))
 		}
