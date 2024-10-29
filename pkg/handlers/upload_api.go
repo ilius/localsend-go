@@ -13,7 +13,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/go-clipboard"
 	"github.com/ilius/localsend-go/pkg/models"
 )
@@ -48,7 +47,7 @@ func PrepareUploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 		if strings.HasSuffix(fileInfo.FileName, ".txt") {
 			slog.Info("TXT file content preview", "preview", string(fileInfo.Preview))
-			if config.Global.Receive.Clipboard {
+			if conf.Receive.Clipboard {
 				err := clipboard.WriteAll(fileInfo.Preview)
 				if err != nil {
 					slog.Error("Error copying to clipboard", "err", err)
@@ -86,7 +85,7 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate file paths, preserving file extensions
-	filePath := filepath.Join(config.Global.Receive.Directory, fileName)
+	filePath := filepath.Join(conf.Receive.Directory, fileName)
 	// Create the folder if it does not exist
 	dir := filepath.Dir(filePath)
 	err := os.MkdirAll(dir, os.ModePerm)
@@ -96,7 +95,7 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if config.Global.Receive.ExitAfterFileCount > 0 {
+	if conf.Receive.ExitAfterFileCount > 0 {
 		defer checkExitAfterFileCount()
 	}
 
@@ -111,7 +110,7 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 	buffer := make([]byte, 2*1024*1024) // 2MB buffer
 	size := 0
-	maxSize := config.Global.Receive.MaxFileSize
+	maxSize := conf.Receive.MaxFileSize
 	for {
 		n, err := r.Body.Read(buffer)
 		if err != nil && err != io.EOF {
@@ -143,7 +142,7 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 func checkExitAfterFileCount() {
 	count := int(uploadCount.Add(1))
-	if count < config.Global.Receive.ExitAfterFileCount {
+	if count < conf.Receive.ExitAfterFileCount {
 		return
 	}
 	slog.Info("Exiting due to max recieved file count reached")

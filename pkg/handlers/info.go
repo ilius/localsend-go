@@ -5,12 +5,11 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/discovery/shared"
 )
 
 func GetInfoHandler(w http.ResponseWriter, r *http.Request) {
-	msg := shared.GetMesssage(&config.Global)
+	msg := shared.GetMesssage(conf)
 	res, err := json.Marshal(msg)
 	if err != nil {
 		slog.Error("json convert failed:", "err", err)

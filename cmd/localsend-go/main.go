@@ -64,6 +64,7 @@ func main() {
 
 	conf := config.Init()
 	setupLoggerAfterConfigLoad(conf, noColor)
+	handlers.SetConfig(conf)
 
 	// Enable broadcast and monitoring functions
 	go discovery.ListenForBroadcasts()

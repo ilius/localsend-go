@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-
-	"github.com/ilius/localsend-go/pkg/config"
 )
 
 // UploadHandler handles file upload requests
@@ -62,9 +60,9 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func changeFileOwnerGroup(filePath string) {
-	if config.Global.Receive.SaveUserID > 0 || config.Global.Receive.SaveGroupID > 0 {
+	if conf.Receive.SaveUserID > 0 || conf.Receive.SaveGroupID > 0 {
 		slog.Debug("Changing file ownership and group")
-		err := os.Chown(filePath, config.Global.Receive.SaveUserID, config.Global.Receive.SaveGroupID)
+		err := os.Chown(filePath, conf.Receive.SaveUserID, conf.Receive.SaveGroupID)
 		if err != nil {
 			slog.Error("Failed to change ownership of file", "err", err)
 		}
