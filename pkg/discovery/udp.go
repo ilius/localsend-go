@@ -6,19 +6,20 @@ import (
 	"net"
 	"time"
 
+	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/discovery/shared"
 	"github.com/ilius/localsend-go/pkg/models"
 )
 
 // StartBroadcast sends a broadcast message
-func StartBroadcast() {
+func StartBroadcast(conf *config.Config) {
 	// Set the multicast address and port
 	multicastAddr := &net.UDPAddr{
 		IP:   net.ParseIP("224.0.0.167"),
 		Port: 53317,
 	}
 
-	msg := shared.GetMesssage()
+	msg := shared.GetMesssage(conf)
 	data, err := json.Marshal(msg)
 	if err != nil {
 		panic(err)

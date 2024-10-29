@@ -62,17 +62,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	config.Init()
-	setupLoggerAfterConfigLoad(noColor)
+	conf := config.Init()
+	setupLoggerAfterConfigLoad(conf, noColor)
 
 	// Enable broadcast and monitoring functions
 	go discovery.ListenForBroadcasts()
-	go discovery.StartBroadcast()
-	go discovery.StartHTTPBroadcast() // Start HTTP Broadcast
+	go discovery.StartBroadcast(conf)
+	go discovery.StartHTTPBroadcast(conf) // Start HTTP Broadcast
 
 	// Start HTTP Server
 	httpServer := server.New()
-	if config.Global.Functions.HttpFileServer {
+	if conf.Functions.HttpFileServer {
 		// If you enable the http file server, enable the following routes
 		httpServer.HandleFunc("/", handlers.IndexFileHandler)
 		httpServer.HandleFunc("/uploads/", handlers.FileServerHandler)
@@ -83,7 +83,7 @@ func main() {
 	}
 
 	// Send and receive part
-	if config.Global.Functions.LocalSendServer {
+	if conf.Functions.LocalSendServer {
 		httpServer.HandleFunc("/api/localsend/v2/prepare-upload", handlers.PrepareUploadAPIHandler)
 		httpServer.HandleFunc("/api/localsend/v2/upload", handlers.UploadAPIHandler)
 		httpServer.HandleFunc("/api/localsend/v2/info", handlers.GetInfoHandler)
@@ -100,7 +100,7 @@ func main() {
 
 	switch *mode {
 	case cmd_send:
-		err := send.SendFile(*toDevice, *filePath)
+		err := send.SendFile(conf, *toDevice, *filePath)
 		if err != nil {
 			slog.Error("Send failed", "err", err)
 		}

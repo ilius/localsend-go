@@ -12,12 +12,13 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/discovery/shared"
 	"github.com/ilius/localsend-go/pkg/models"
 	"github.com/ilius/localsend-go/pkg/utils"
 )
 
-func sendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiveResponse, error) {
+func sendFileToOtherDevicePrepare(conf *config.Config, ip string, path string) (*models.PrepareReceiveResponse, error) {
 	// Prepare metadata for all files
 	files := make(map[string]models.FileInfo)
 	err := filepath.Walk(path, func(filePath string, info os.FileInfo, err error) error {
@@ -44,7 +45,7 @@ func sendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiv
 		return nil, fmt.Errorf("error walking the path: %w", err)
 	}
 
-	msg := shared.GetMesssage()
+	msg := shared.GetMesssage(conf)
 
 	// Create and fill the PrepareReceiveRequest structure
 	request := models.PrepareReceiveRequest{
@@ -161,8 +162,8 @@ func uploadFile(ip, sessionId, fileId, token, filePath string) error {
 	return nil
 }
 
-func SendFile(ip string, path string) error {
-	response, err := sendFileToOtherDevicePrepare(ip, path)
+func SendFile(conf *config.Config, ip string, path string) error {
+	response, err := sendFileToOtherDevicePrepare(conf, ip, path)
 	slog.Info("SendFile: got response", "response", response)
 	if err != nil {
 		return err

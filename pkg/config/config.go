@@ -63,7 +63,7 @@ func GetConfigDir() string {
 	return platformConfigDir()
 }
 
-func Init() {
+func Init() *Config {
 	var bytes []byte
 	var err error
 
@@ -102,4 +102,5 @@ func Init() {
 	if Global.Receive.Clipboard {
 		clipboard.Init()
 	}
+	return &Global
 }

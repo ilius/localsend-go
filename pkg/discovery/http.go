@@ -13,6 +13,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/discovery/shared"
 	"github.com/ilius/localsend-go/pkg/models"
 
@@ -100,8 +101,8 @@ func pingScan() ([]string, error) {
 }
 
 // StartHTTPBroadcast sends HTTP requests to all IPs in the LAN
-func StartHTTPBroadcast() {
-	msg := shared.GetMesssage()
+func StartHTTPBroadcast(conf *config.Config) {
+	msg := shared.GetMesssage(conf)
 	for {
 		data, err := json.Marshal(msg)
 		slog.Debug(string(data))
