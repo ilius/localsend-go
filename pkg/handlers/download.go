@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/ilius/localsend-go/pkg/config"
 )
 
 // DownloadHandler handles file download requests
@@ -16,8 +18,8 @@ func DownloadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Assuming the files are stored in the "uploads" directory
-	filePath := filepath.Join("uploads", fileName)
+	// Assuming the files are stored in the configured directory
+	filePath := filepath.Join(config.ConfigData.Send.Directory, fileName)
 	file, err := os.Open(filePath)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Could not open file: %v", err), http.StatusNotFound)

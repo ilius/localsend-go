@@ -22,11 +22,15 @@ type Config struct {
 	NameLanguage string `toml:"name_language"`
 	Receive      struct {
 		Directory          string `toml:"directory"`
+		MaxFileSize        int    `toml:"max_file_size"`
 		SaveUserID         int    `toml:"save_user_id"`
 		SaveGroupID        int    `toml:"save_group_id"`
 		Clipboard          bool   `toml:"clipboard"`
 		ExitAfterFileCount int    `toml:"exit_after_file_count"`
 	} `toml:"receive"`
+	Send struct {
+		Directory string `toml:"directory"`
+	} `toml:"send"`
 	Functions struct {
 		HttpFileServer  bool `toml:"http_file_server"`
 		LocalSendServer bool `toml:"local_send_server"`

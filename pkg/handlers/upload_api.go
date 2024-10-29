@@ -95,6 +95,11 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 		slog.Error("Error creating directory", "err", err)
 		return
 	}
+
+	if config.ConfigData.Receive.ExitAfterFileCount > 0 {
+		defer checkExitAfterFileCount()
+	}
+
 	// Create a file
 	file, err := os.Create(filePath)
 	if err != nil {
@@ -105,6 +110,8 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	buffer := make([]byte, 2*1024*1024) // 2MB buffer
+	size := 0
+	maxSize := config.ConfigData.Receive.MaxFileSize
 	for {
 		n, err := r.Body.Read(buffer)
 		if err != nil && err != io.EOF {
@@ -115,28 +122,33 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 		if n == 0 {
 			break
 		}
+		size += n
+		if size > maxSize {
+			http.Error(w, "Failed to write file", http.StatusInternalServerError)
+			slog.Error("Max file size reached", "size", size, "maxSize", maxSize)
+		}
 
 		_, err = file.Write(buffer[:n])
 		if err != nil {
 			http.Error(w, "Failed to write file", http.StatusInternalServerError)
 			slog.Error("Error writing file", "err", err)
 			return
-
 		}
 	}
 	changeFileOwnerGroup(filePath)
 
 	slog.Info("Saved file", "filePath", filePath)
 	w.WriteHeader(http.StatusOK)
+}
 
-	if config.ConfigData.Receive.ExitAfterFileCount > 0 {
-		count := int(uploadCount.Add(1))
-		if count >= config.ConfigData.Receive.ExitAfterFileCount {
-			slog.Info("Exiting due to max recieved file count reached")
-			go func() {
-				time.Sleep(100 * time.Millisecond)
-				os.Exit(0)
-			}()
-		}
+func checkExitAfterFileCount() {
+	count := int(uploadCount.Add(1))
+	if count < config.ConfigData.Receive.ExitAfterFileCount {
+		return
 	}
+	slog.Info("Exiting due to max recieved file count reached")
+	go func() {
+		time.Sleep(100 * time.Millisecond)
+		os.Exit(0)
+	}()
 }

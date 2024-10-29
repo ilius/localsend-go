@@ -3,9 +3,13 @@ name_language = "en"
 
 [receive]
 directory = "uploads"
+max_file_size = 1000000000
 save_user_id = 0
 save_group_id = 0
 clipboard = false
+
+[send]
+directory = "uploads"
 
 [functions]
 http_file_server = true
