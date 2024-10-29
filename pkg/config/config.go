@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 
 	"github.com/ilius/localsend-go/pkg/alias"
-	"github.com/ilius/localsend-go/pkg/go-clipboard"
 	"github.com/ilius/localsend-go/pkg/toml"
 )
 
@@ -77,9 +76,6 @@ func Init() *Config {
 		name := alias.GenerateRandomAlias(conf.NameLanguage)
 		slog.Info("Using random name/alias: ", "name", name)
 		conf.NameOfDevice = name
-	}
-	if conf.Receive.Clipboard {
-		clipboard.Init()
 	}
 	return conf
 }

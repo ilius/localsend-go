@@ -9,6 +9,7 @@ import (
 
 	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/discovery"
+	"github.com/ilius/localsend-go/pkg/go-clipboard"
 	"github.com/ilius/localsend-go/pkg/handlers"
 	"github.com/ilius/localsend-go/pkg/send"
 	"github.com/ilius/localsend-go/pkg/server"
@@ -65,6 +66,9 @@ func main() {
 	conf := config.Init()
 	setupLoggerAfterConfigLoad(conf, noColor)
 	handlers.SetConfig(conf)
+	if conf.Receive.Clipboard {
+		clipboard.Init()
+	}
 
 	// Enable broadcast and monitoring functions
 	go discovery.ListenForBroadcasts()
