@@ -28,7 +28,7 @@ func AddDiscoveredDevice(ip string, msg *BroadcastMessage) bool {
 // https://github.com/localsend/protocol?tab=readme-ov-file#71-device-type
 func GetMesssage() BroadcastMessage {
 	return BroadcastMessage{
-		Alias:       config.ConfigData.NameOfDevice,
+		Alias:       config.Global.NameOfDevice,
 		Version:     "2.0",
 		DeviceModel: utils.OSType(),
 		DeviceType:  "headless", // Indicates that it is running without GUI

@@ -72,7 +72,7 @@ func main() {
 
 	// Start HTTP Server
 	httpServer := server.New()
-	if config.ConfigData.Functions.HttpFileServer {
+	if config.Global.Functions.HttpFileServer {
 		// If you enable the http file server, enable the following routes
 		httpServer.HandleFunc("/", handlers.IndexFileHandler)
 		httpServer.HandleFunc("/uploads/", handlers.FileServerHandler)
@@ -83,7 +83,7 @@ func main() {
 	}
 
 	// Send and receive part
-	if config.ConfigData.Functions.LocalSendServer {
+	if config.Global.Functions.LocalSendServer {
 		httpServer.HandleFunc("/api/localsend/v2/prepare-upload", handlers.PrepareUploadAPIHandler)
 		httpServer.HandleFunc("/api/localsend/v2/upload", handlers.UploadAPIHandler)
 		httpServer.HandleFunc("/api/localsend/v2/info", handlers.GetInfoHandler)

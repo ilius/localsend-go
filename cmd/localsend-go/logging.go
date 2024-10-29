@@ -44,19 +44,19 @@ func parseLevel(levelStr string) (slog.Level, bool) {
 func setupLoggerAfterConfigLoad(noColor bool) {
 	recreateLogger := false
 	level := defaultLevel
-	if !noColor && config.ConfigData.Logging.NoColor {
+	if !noColor && config.Global.Logging.NoColor {
 		noColor = true
 		recreateLogger = true
 	}
-	if config.ConfigData.Logging.Level != "" {
-		configLevel, ok := parseLevel(config.ConfigData.Logging.Level)
+	if config.Global.Logging.Level != "" {
+		configLevel, ok := parseLevel(config.Global.Logging.Level)
 		if ok {
 			if configLevel != defaultLevel {
 				level = configLevel
 				recreateLogger = true
 			}
 		} else {
-			slog.Error("invalid log level name", "level", config.ConfigData.Logging.Level)
+			slog.Error("invalid log level name", "level", config.Global.Logging.Level)
 		}
 	}
 	if recreateLogger {

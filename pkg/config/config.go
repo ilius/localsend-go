@@ -41,7 +41,7 @@ type Config struct {
 	} `toml:"logging"`
 }
 
-var ConfigData Config
+var Global Config
 
 func Path() string {
 	_path := os.Getenv("CONFIG_FILE")
@@ -75,7 +75,7 @@ func Init() {
 		if err != nil {
 			panic(fmt.Sprintf("Error reading embedded config file: %v", err))
 		}
-		err = toml.Unmarshal(bytes, &ConfigData)
+		err = toml.Unmarshal(bytes, &Global)
 		if err != nil {
 			panic(fmt.Sprintf("Error parsing default config file: %v", err))
 		}
@@ -88,18 +88,18 @@ func Init() {
 			slog.Error("Failed to read external configuration file, using built-in configuration")
 		}
 	} else {
-		err = toml.Unmarshal(bytes, &ConfigData)
+		err = toml.Unmarshal(bytes, &Global)
 		if err != nil {
 			panic(fmt.Sprintf("Error parsing config file: %v", err))
 		}
-		slog.Info("Loaded user config file", "configData", ConfigData)
+		slog.Info("Loaded user config file", "configData", Global)
 	}
-	if ConfigData.NameOfDevice == "" {
-		name := alias.GenerateRandomAlias(ConfigData.NameLanguage)
+	if Global.NameOfDevice == "" {
+		name := alias.GenerateRandomAlias(Global.NameLanguage)
 		slog.Info("Using random name/alias: ", "name", name)
-		ConfigData.NameOfDevice = name
+		Global.NameOfDevice = name
 	}
-	if ConfigData.Receive.Clipboard {
+	if Global.Receive.Clipboard {
 		clipboard.Init()
 	}
 }

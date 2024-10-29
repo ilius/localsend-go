@@ -19,7 +19,7 @@ func DownloadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Assuming the files are stored in the configured directory
-	filePath := filepath.Join(config.ConfigData.Send.Directory, fileName)
+	filePath := filepath.Join(config.Global.Send.Directory, fileName)
 	file, err := os.Open(filePath)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Could not open file: %v", err), http.StatusNotFound)
