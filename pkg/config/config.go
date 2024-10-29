@@ -15,7 +15,7 @@ import (
 const fileName = "config.toml"
 
 //go:embed config.toml
-var EmbeddedConfig embed.FS
+var embedFS embed.FS
 
 type Config struct {
 	NameOfDevice string `toml:"name"`
@@ -71,7 +71,7 @@ func Init() {
 
 	// read from the embedded file system
 	{
-		bytes, err = EmbeddedConfig.ReadFile("config.toml")
+		bytes, err = embedFS.ReadFile("config.toml")
 		if err != nil {
 			panic(fmt.Sprintf("Error reading embedded config file: %v", err))
 		}
