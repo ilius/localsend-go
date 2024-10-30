@@ -19,6 +19,7 @@ var embedFS embed.FS
 type Config struct {
 	NameOfDevice string `toml:"name"`
 	NameLanguage string `toml:"name_language"`
+	MulticastIP  string `toml:"multicast_ip"`
 	Receive      struct {
 		Directory          string `toml:"directory"`
 		MaxFileSize        int    `toml:"max_file_size"`

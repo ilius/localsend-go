@@ -14,7 +14,7 @@ import (
 
 // Enable broadcast and monitoring functions
 func StartDiscovery(conf *config.Config) {
-	go discovery.ListenForBroadcasts()
+	go discovery.ListenForBroadcasts(conf)
 	go discovery.StartBroadcast(conf)
 	go discovery.StartHTTPBroadcast(conf)
 }

@@ -1,5 +1,6 @@
 name = ""
 name_language = "en"
+multicast_ip = "224.0.0.167" # https://en.wikipedia.org/wiki/Multicast_address
 
 [receive]
 directory = "uploads"

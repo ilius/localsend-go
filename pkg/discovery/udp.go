@@ -13,9 +13,11 @@ import (
 
 // StartBroadcast sends a broadcast message
 func StartBroadcast(conf *config.Config) {
+	slog.Info("Starting broadcast", "multicast_ip", conf.MulticastIP)
+
 	// Set the multicast address and port
 	multicastAddr := &net.UDPAddr{
-		IP:   net.ParseIP(mulicastIP),
+		IP:   net.ParseIP(conf.MulticastIP),
 		Port: 53317,
 	}
 
@@ -49,12 +51,12 @@ func StartBroadcast(conf *config.Config) {
 }
 
 // ListenForBroadcasts listens for UDP broadcast messages
-func ListenForBroadcasts() {
-	slog.Info("Listening for broadcasts...")
+func ListenForBroadcasts(conf *config.Config) {
+	slog.Info("Listening for broadcasts", "multicast_ip", conf.MulticastIP)
 
 	// Set the multicast address and port
 	multicastAddr := &net.UDPAddr{
-		IP:   net.ParseIP(mulicastIP),
+		IP:   net.ParseIP(conf.MulticastIP),
 		Port: 53317,
 	}
 
