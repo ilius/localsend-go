@@ -29,7 +29,7 @@ func main() {
 	logging.SetupLoggerAfterConfigLoad(conf, noColor)
 	handlers.SetConfig(conf)
 
-	startup.StartupServices(conf)
+	startup.StartupServices(conf, _flags.ReceiveMode)
 
 	if _flags.ReceiveMode {
 		slog.Info("Waiting to receive files...")

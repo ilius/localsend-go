@@ -13,22 +13,22 @@ import (
 	"github.com/ilius/localsend-go/pkg/static"
 )
 
-func StartupServices(conf *config.Config) {
+func StartupServices(conf *config.Config, receiveMode bool) {
 	if conf.Receive.Clipboard {
 		clipboard.Init()
 	}
 
 	startDiscovery(conf) // Enable broadcast and monitoring functions
 
-	// Start HTTP Server
 	mux := server.New()
-	if conf.Functions.HttpFileServer {
-		addHttpFileServerRoutes(mux)
-	}
 
-	// Send and receive part
-	if conf.Functions.LocalSendServer {
-		addLocalSendServerRoutes(mux)
+	if receiveMode {
+		if conf.Functions.HttpFileServer {
+			addHttpFileServerRoutes(mux) // Start HTTP Server
+		}
+		if conf.Functions.LocalSendServer {
+			addLocalSendServerRoutes(mux) // Send and receive part
+		}
 	}
 
 	go func() {
