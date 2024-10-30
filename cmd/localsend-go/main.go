@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/ilius/localsend-go/pkg/config"
+	"github.com/ilius/localsend-go/pkg/go-clipboard"
 	"github.com/ilius/localsend-go/pkg/handlers"
 	"github.com/ilius/localsend-go/pkg/logging"
 	"github.com/ilius/localsend-go/pkg/send"
@@ -29,9 +30,14 @@ func main() {
 	logging.SetupLoggerAfterConfigLoad(conf, noColor)
 	handlers.SetConfig(conf)
 
-	startup.StartupServices(conf, _flags.ReceiveMode)
+	if conf.Receive.Clipboard {
+		clipboard.Init()
+	}
+
+	startup.StartDiscovery(conf) // Enable broadcast and monitoring functions
 
 	if _flags.ReceiveMode {
+		startup.StartHttpServer(conf)
 		slog.Info("Waiting to receive files...")
 		select {} // Blocking program waiting to receive file
 	} else {

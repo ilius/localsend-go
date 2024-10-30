@@ -7,43 +7,32 @@ import (
 
 	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/discovery"
-	"github.com/ilius/localsend-go/pkg/go-clipboard"
 	"github.com/ilius/localsend-go/pkg/handlers"
 	"github.com/ilius/localsend-go/pkg/server"
 	"github.com/ilius/localsend-go/pkg/static"
 )
 
-func StartupServices(conf *config.Config, receiveMode bool) {
-	if conf.Receive.Clipboard {
-		clipboard.Init()
-	}
+// Enable broadcast and monitoring functions
+func StartDiscovery(conf *config.Config) {
+	go discovery.ListenForBroadcasts()
+	go discovery.StartBroadcast(conf)
+	go discovery.StartHTTPBroadcast(conf)
+}
 
-	startDiscovery(conf) // Enable broadcast and monitoring functions
-
+func StartHttpServer(conf *config.Config) {
 	mux := server.New()
-
-	if receiveMode {
-		if conf.Functions.HttpFileServer {
-			addHttpFileServerRoutes(mux) // Start HTTP Server
-		}
-		if conf.Functions.LocalSendServer {
-			addLocalSendServerRoutes(mux) // Send and receive part
-		}
+	if conf.Functions.HttpFileServer {
+		addHttpFileServerRoutes(mux)
 	}
-
+	if conf.Functions.LocalSendServer {
+		addLocalSendServerRoutes(mux) // Send and receive part
+	}
 	go func() {
 		slog.Info("Server starting on :53317")
 		if err := http.ListenAndServe(":53317", mux); err != nil {
 			panic(fmt.Sprintf("Server failed: %v", err))
 		}
 	}()
-}
-
-// Enable broadcast and monitoring functions
-func startDiscovery(conf *config.Config) {
-	go discovery.ListenForBroadcasts()
-	go discovery.StartBroadcast(conf)
-	go discovery.StartHTTPBroadcast(conf)
 }
 
 // If you enable the http file server, enable the following routes
