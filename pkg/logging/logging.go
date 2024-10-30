@@ -1,4 +1,4 @@
-package main
+package logging
 
 import (
 	"log/slog"
@@ -11,9 +11,9 @@ import (
 	"github.com/ilius/localsend-go/pkg/slogcolor"
 )
 
-const defaultLevel = slog.LevelInfo
+const DefaultLevel = slog.LevelInfo
 
-func setupLogger(noColor bool, level slog.Level) {
+func SetupLogger(noColor bool, level slog.Level) {
 	handler := slogcolor.NewHandler(os.Stdout, &slogcolor.Options{
 		Level:         level,
 		TimeFormat:    time.DateTime,
@@ -41,9 +41,9 @@ func parseLevel(levelStr string) (slog.Level, bool) {
 	return slog.LevelInfo, false
 }
 
-func setupLoggerAfterConfigLoad(conf *config.Config, noColor bool) {
+func SetupLoggerAfterConfigLoad(conf *config.Config, noColor bool) {
 	recreateLogger := false
-	level := defaultLevel
+	level := DefaultLevel
 	if !noColor && conf.Logging.NoColor {
 		noColor = true
 		recreateLogger = true
@@ -51,7 +51,7 @@ func setupLoggerAfterConfigLoad(conf *config.Config, noColor bool) {
 	if conf.Logging.Level != "" {
 		configLevel, ok := parseLevel(conf.Logging.Level)
 		if ok {
-			if configLevel != defaultLevel {
+			if configLevel != DefaultLevel {
 				level = configLevel
 				recreateLogger = true
 			}
@@ -61,6 +61,6 @@ func setupLoggerAfterConfigLoad(conf *config.Config, noColor bool) {
 	}
 	if recreateLogger {
 		slog.Info("Re-creating logger after loading config")
-		setupLogger(noColor, level)
+		SetupLogger(noColor, level)
 	}
 }

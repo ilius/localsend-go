@@ -7,6 +7,7 @@ import (
 
 	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/handlers"
+	"github.com/ilius/localsend-go/pkg/logging"
 	"github.com/ilius/localsend-go/pkg/send"
 	"github.com/ilius/localsend-go/pkg/startup"
 )
@@ -18,12 +19,12 @@ func main() {
 	}()
 
 	noColor := os.Getenv("NO_COLOLR") != ""
-	setupLogger(noColor, defaultLevel)
+	logging.SetupLogger(noColor, logging.DefaultLevel)
 
 	_flags := parseFlags()
 
 	conf := config.Init()
-	setupLoggerAfterConfigLoad(conf, noColor)
+	logging.SetupLoggerAfterConfigLoad(conf, noColor)
 	handlers.SetConfig(conf)
 
 	startup.StartupServices(conf)
