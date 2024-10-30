@@ -20,6 +20,8 @@ func StartDiscovery(conf *config.Config) {
 }
 
 func StartHttpServer(conf *config.Config) {
+	handlers.SetConfig(conf)
+
 	mux := server.New()
 	if conf.Functions.HttpFileServer {
 		addHttpFileServerRoutes(mux)

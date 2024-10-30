@@ -7,7 +7,6 @@ import (
 
 	"github.com/ilius/localsend-go/pkg/config"
 	"github.com/ilius/localsend-go/pkg/go-clipboard"
-	"github.com/ilius/localsend-go/pkg/handlers"
 	"github.com/ilius/localsend-go/pkg/logging"
 	"github.com/ilius/localsend-go/pkg/send"
 	"github.com/ilius/localsend-go/pkg/startup"
@@ -28,7 +27,6 @@ func main() {
 
 	conf := config.Init()
 	logging.SetupLoggerAfterConfigLoad(conf, noColor)
-	handlers.SetConfig(conf)
 
 	if conf.Receive.Clipboard {
 		clipboard.Init()
