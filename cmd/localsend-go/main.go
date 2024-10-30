@@ -15,7 +15,9 @@ import (
 func main() {
 	defer func() {
 		r := recover()
-		slog.Error(fmt.Sprintf("%v", r))
+		if r != nil {
+			slog.Error(fmt.Sprintf("%v", r))
+		}
 	}()
 
 	noColor := os.Getenv("NO_COLOLR") != ""
