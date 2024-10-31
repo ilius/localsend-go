@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log/slog"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -31,7 +30,7 @@ func (s *serverImp) prepareUploadAPIHandler(w http.ResponseWriter, r *http.Reque
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	slog.Info("Received request:", "req", req)
+	s.log.Info("Received request:", "req", req)
 
 	sessionID := fmt.Sprintf("session-%d", sessionIDCounter.Add(1))
 
@@ -46,11 +45,11 @@ func (s *serverImp) prepareUploadAPIHandler(w http.ResponseWriter, r *http.Reque
 		fileNamesRWMutex.Unlock()
 
 		if strings.HasSuffix(fileInfo.FileName, ".txt") {
-			slog.Info("TXT file content preview", "preview", string(fileInfo.Preview))
+			s.log.Info("TXT file content preview", "preview", string(fileInfo.Preview))
 			if s.conf.Receive.Clipboard {
 				err := clipboard.WriteAll(fileInfo.Preview)
 				if err != nil {
-					slog.Error("Error copying to clipboard", "err", err)
+					s.log.Error("Error copying to clipboard", "err", err)
 				}
 			}
 		}
@@ -91,7 +90,7 @@ func (s *serverImp) uploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	err := os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
 		http.Error(w, "Failed to create directory", http.StatusInternalServerError)
-		slog.Error("Error creating directory", "err", err)
+		s.log.Error("Error creating directory", "err", err)
 		return
 	}
 
@@ -103,7 +102,7 @@ func (s *serverImp) uploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	file, err := os.Create(filePath)
 	if err != nil {
 		http.Error(w, "Failed to create file", http.StatusInternalServerError)
-		slog.Error("Error creating file", "err", err)
+		s.log.Error("Error creating file", "err", err)
 		return
 	}
 	defer file.Close()
@@ -115,7 +114,7 @@ func (s *serverImp) uploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 		n, err := r.Body.Read(buffer)
 		if err != nil && err != io.EOF {
 			http.Error(w, "Failed to read file", http.StatusInternalServerError)
-			slog.Error("Error reading file", "err", err)
+			s.log.Error("Error reading file", "err", err)
 			return
 		}
 		if n == 0 {
@@ -124,19 +123,19 @@ func (s *serverImp) uploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 		size += n
 		if size > maxSize {
 			http.Error(w, "Failed to write file", http.StatusInternalServerError)
-			slog.Error("Max file size reached", "size", size, "maxSize", maxSize)
+			s.log.Error("Max file size reached", "size", size, "maxSize", maxSize)
 		}
 
 		_, err = file.Write(buffer[:n])
 		if err != nil {
 			http.Error(w, "Failed to write file", http.StatusInternalServerError)
-			slog.Error("Error writing file", "err", err)
+			s.log.Error("Error writing file", "err", err)
 			return
 		}
 	}
 	s.changeFileOwnerGroup(filePath)
 
-	slog.Info("Saved file", "filePath", filePath)
+	s.log.Info("Saved file", "filePath", filePath)
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -145,7 +144,7 @@ func (s *serverImp) checkExitAfterFileCount() {
 	if count < s.conf.Receive.ExitAfterFileCount {
 		return
 	}
-	slog.Info("Exiting due to max recieved file count reached")
+	s.log.Info("Exiting due to max recieved file count reached")
 	go func() {
 		time.Sleep(100 * time.Millisecond)
 		os.Exit(0)

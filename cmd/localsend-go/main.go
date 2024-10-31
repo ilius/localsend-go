@@ -22,12 +22,12 @@ func main() {
 	}()
 
 	noColor := os.Getenv("NO_COLOLR") != ""
-	logging.SetupLogger(noColor, logging.DefaultLevel)
+	logger := logging.SetupLogger(noColor, logging.DefaultLevel)
 
 	_flags := parseFlags()
 
 	conf := config.Init()
-	logging.SetupLoggerAfterConfigLoad(conf, noColor)
+	logger = logging.SetupLoggerAfterConfigLoad(logger, conf, noColor)
 
 	if conf.Receive.Clipboard {
 		clipboard.Init()
@@ -36,7 +36,7 @@ func main() {
 	discovery.Start(conf) // Enable broadcast and monitoring functions
 
 	if _flags.ReceiveMode {
-		srv := server.New(conf)
+		srv := server.New(conf, logger)
 		srv.StartHttpServer()
 		slog.Info("Waiting to receive files...")
 		select {} // Blocking program waiting to receive file

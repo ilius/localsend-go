@@ -3,7 +3,6 @@ package server
 import (
 	"fmt"
 	"io"
-	"log/slog"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -49,7 +48,7 @@ func (s *serverImp) uploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = dst.Close()
 	if err != nil {
-		slog.Error("Failed to close file", "err", err)
+		s.log.Error("Failed to close file", "err", err)
 		http.Error(w, fmt.Sprintf("Could not save file: %v", err), http.StatusInternalServerError)
 		return
 	}
@@ -61,10 +60,10 @@ func (s *serverImp) uploadHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *serverImp) changeFileOwnerGroup(filePath string) {
 	if s.conf.Receive.SaveUserID > 0 || s.conf.Receive.SaveGroupID > 0 {
-		slog.Debug("Changing file ownership and group")
+		s.log.Debug("Changing file ownership and group")
 		err := os.Chown(filePath, s.conf.Receive.SaveUserID, s.conf.Receive.SaveGroupID)
 		if err != nil {
-			slog.Error("Failed to change ownership of file", "err", err)
+			s.log.Error("Failed to change ownership of file", "err", err)
 		}
 	}
 }

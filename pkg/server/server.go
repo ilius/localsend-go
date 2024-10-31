@@ -12,12 +12,14 @@ import (
 type serverImp struct {
 	mux  *http.ServeMux
 	conf *config.Config
+	log  *slog.Logger
 }
 
-func New(conf *config.Config) *serverImp {
+func New(conf *config.Config, logger *slog.Logger) *serverImp {
 	return &serverImp{
 		mux:  http.NewServeMux(),
 		conf: conf,
+		log:  logger,
 	}
 }
 
@@ -29,7 +31,7 @@ func (s *serverImp) StartHttpServer() {
 		s.addLocalSendServerRoutes() // Send and receive part
 	}
 	go func() {
-		slog.Info("Server starting on :53317")
+		s.log.Info("Server starting on :53317")
 		if err := http.ListenAndServe(":53317", s.mux); err != nil {
 			panic(fmt.Sprintf("Server failed: %v", err))
 		}

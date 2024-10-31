@@ -13,7 +13,7 @@ import (
 
 const DefaultLevel = slog.LevelInfo
 
-func SetupLogger(noColor bool, level slog.Level) {
+func SetupLogger(noColor bool, level slog.Level) *slog.Logger {
 	handler := slogcolor.NewHandler(os.Stdout, &slogcolor.Options{
 		Level:         level,
 		TimeFormat:    time.DateTime,
@@ -24,7 +24,9 @@ func SetupLogger(noColor bool, level slog.Level) {
 		MsgColor:  color.New(),
 		NoColor:   noColor,
 	})
-	slog.SetDefault(slog.New(handler))
+	logger := slog.New(handler)
+	slog.SetDefault(logger)
+	return logger
 }
 
 func parseLevel(levelStr string) (slog.Level, bool) {
@@ -41,7 +43,7 @@ func parseLevel(levelStr string) (slog.Level, bool) {
 	return slog.LevelInfo, false
 }
 
-func SetupLoggerAfterConfigLoad(conf *config.Config, noColor bool) {
+func SetupLoggerAfterConfigLoad(logger *slog.Logger, conf *config.Config, noColor bool) *slog.Logger {
 	recreateLogger := false
 	level := DefaultLevel
 	if !noColor && conf.Logging.NoColor {
@@ -61,6 +63,7 @@ func SetupLoggerAfterConfigLoad(conf *config.Config, noColor bool) {
 	}
 	if recreateLogger {
 		slog.Info("Re-creating logger after loading config")
-		SetupLogger(noColor, level)
+		return SetupLogger(noColor, level)
 	}
+	return logger
 }
