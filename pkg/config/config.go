@@ -43,7 +43,7 @@ type Config struct {
 	} `toml:"logging"`
 }
 
-func Init() *Config {
+func Init(logger *slog.Logger) *Config {
 	conf := &Config{}
 	var bytes []byte
 	var err error
@@ -62,25 +62,25 @@ func Init() *Config {
 		}
 	}
 
-	slog.Info("Trying to read user config file", "configPath", configPath)
+	logger.Info("Trying to read user config file", "configPath", configPath)
 	bytes, err = os.ReadFile(configPath)
 	if err != nil {
 		if !os.IsNotExist(err) {
-			slog.Error("Failed to read external configuration file, using built-in configuration")
+			logger.Error("Failed to read external configuration file, using built-in configuration")
 		}
 	} else {
 		err = toml.Unmarshal(bytes, conf)
 		if err != nil {
 			panic(fmt.Sprintf("Error parsing config file: %v", err))
 		}
-		slog.Info("Loaded user config file", "configData", conf)
+		logger.Info("Loaded user config file", "configData", conf)
 	}
 	if conf.NameOfDevice == "" {
 		name, err := alias.GenerateRandomAlias(conf.NameLanguage)
 		if err != nil {
-			slog.Error(err.Error())
+			logger.Error(err.Error())
 		}
-		slog.Info("Using random name/alias: ", "name", name)
+		logger.Info("Using random name/alias: ", "name", name)
 		conf.NameOfDevice = name
 	}
 	return conf

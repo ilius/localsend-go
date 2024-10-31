@@ -25,7 +25,7 @@ func main() {
 
 	_flags := parseFlags()
 
-	conf := config.Init()
+	conf := config.Init(logger)
 	logger = logging.SetupLoggerAfterConfigLoad(logger, conf, noColor)
 
 	if conf.Receive.Clipboard {
