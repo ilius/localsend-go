@@ -1,4 +1,4 @@
-package handlers
+package server
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 )
 
 // DownloadHandler handles file download requests
-func DownloadHandler(w http.ResponseWriter, r *http.Request) {
+func (s *serverImp) DownloadHandler(w http.ResponseWriter, r *http.Request) {
 	fileName := r.URL.Query().Get("file")
 	if fileName == "" {
 		http.Error(w, "File parameter is required", http.StatusBadRequest)
@@ -17,7 +17,7 @@ func DownloadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Assuming the files are stored in the configured directory
-	filePath := filepath.Join(conf.Send.Directory, fileName)
+	filePath := filepath.Join(s.conf.Send.Directory, fileName)
 	file, err := os.Open(filePath)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Could not open file: %v", err), http.StatusNotFound)

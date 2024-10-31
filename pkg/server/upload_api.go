@@ -1,4 +1,4 @@
-package handlers
+package server
 
 import (
 	"encoding/json"
@@ -24,7 +24,7 @@ var (
 	uploadCount      = &atomic.Int64{}
 )
 
-func PrepareUploadAPIHandler(w http.ResponseWriter, r *http.Request) {
+func (s *serverImp) PrepareUploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.PrepareReceiveRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
@@ -47,7 +47,7 @@ func PrepareUploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 		if strings.HasSuffix(fileInfo.FileName, ".txt") {
 			slog.Info("TXT file content preview", "preview", string(fileInfo.Preview))
-			if conf.Receive.Clipboard {
+			if s.conf.Receive.Clipboard {
 				err := clipboard.WriteAll(fileInfo.Preview)
 				if err != nil {
 					slog.Error("Error copying to clipboard", "err", err)
@@ -64,7 +64,7 @@ func PrepareUploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
-func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
+func (s *serverImp) UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	sessionID := r.URL.Query().Get("sessionId")
 	fileID := r.URL.Query().Get("fileId")
 	token := r.URL.Query().Get("token")
@@ -85,7 +85,7 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate file paths, preserving file extensions
-	filePath := filepath.Join(conf.Receive.Directory, fileName)
+	filePath := filepath.Join(s.conf.Receive.Directory, fileName)
 	// Create the folder if it does not exist
 	dir := filepath.Dir(filePath)
 	err := os.MkdirAll(dir, os.ModePerm)
@@ -95,8 +95,8 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if conf.Receive.ExitAfterFileCount > 0 {
-		defer checkExitAfterFileCount()
+	if s.conf.Receive.ExitAfterFileCount > 0 {
+		defer s.checkExitAfterFileCount()
 	}
 
 	// Create a file
@@ -110,7 +110,7 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 	buffer := make([]byte, 2*1024*1024) // 2MB buffer
 	size := 0
-	maxSize := conf.Receive.MaxFileSize
+	maxSize := s.conf.Receive.MaxFileSize
 	for {
 		n, err := r.Body.Read(buffer)
 		if err != nil && err != io.EOF {
@@ -134,15 +134,15 @@ func UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	changeFileOwnerGroup(filePath)
+	s.changeFileOwnerGroup(filePath)
 
 	slog.Info("Saved file", "filePath", filePath)
 	w.WriteHeader(http.StatusOK)
 }
 
-func checkExitAfterFileCount() {
+func (s *serverImp) checkExitAfterFileCount() {
 	count := int(uploadCount.Add(1))
-	if count < conf.Receive.ExitAfterFileCount {
+	if count < s.conf.Receive.ExitAfterFileCount {
 		return
 	}
 	slog.Info("Exiting due to max recieved file count reached")

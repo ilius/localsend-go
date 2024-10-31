@@ -1,4 +1,4 @@
-package handlers
+package server
 
 import (
 	"encoding/json"
@@ -8,8 +8,8 @@ import (
 	"github.com/ilius/localsend-go/pkg/discovery/shared"
 )
 
-func GetInfoHandler(w http.ResponseWriter, r *http.Request) {
-	msg := shared.GetMesssage(conf)
+func (s *serverImp) GetInfoHandler(w http.ResponseWriter, r *http.Request) {
+	msg := shared.GetMesssage(s.conf)
 	res, err := json.Marshal(msg)
 	if err != nil {
 		slog.Error("json convert failed:", "err", err)

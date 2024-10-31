@@ -6,10 +6,11 @@ import (
 	"os"
 
 	"github.com/ilius/localsend-go/pkg/config"
+	"github.com/ilius/localsend-go/pkg/discovery"
 	"github.com/ilius/localsend-go/pkg/go-clipboard"
 	"github.com/ilius/localsend-go/pkg/logging"
 	"github.com/ilius/localsend-go/pkg/send"
-	"github.com/ilius/localsend-go/pkg/startup"
+	"github.com/ilius/localsend-go/pkg/server"
 )
 
 func main() {
@@ -32,10 +33,11 @@ func main() {
 		clipboard.Init()
 	}
 
-	startup.StartDiscovery(conf) // Enable broadcast and monitoring functions
+	discovery.Start(conf) // Enable broadcast and monitoring functions
 
 	if _flags.ReceiveMode {
-		startup.StartHttpServer(conf)
+		srv := server.New(conf)
+		srv.StartHttpServer()
 		slog.Info("Waiting to receive files...")
 		select {} // Blocking program waiting to receive file
 	} else {

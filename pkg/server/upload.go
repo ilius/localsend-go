@@ -1,4 +1,4 @@
-package handlers
+package server
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 )
 
 // UploadHandler handles file upload requests
-func UploadHandler(w http.ResponseWriter, r *http.Request) {
+func (s *serverImp) UploadHandler(w http.ResponseWriter, r *http.Request) {
 	// Parsing multipart/form-data
 	if err := r.ParseMultipartForm(10 << 20); err != nil {
 		http.Error(w, fmt.Sprintf("Could not parse multipart form: %v", err), http.StatusBadRequest)
@@ -53,16 +53,16 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("Could not save file: %v", err), http.StatusInternalServerError)
 		return
 	}
-	changeFileOwnerGroup(filePath)
+	s.changeFileOwnerGroup(filePath)
 
 	w.WriteHeader(http.StatusCreated)
 	fmt.Fprintf(w, "File uploaded successfully: %s\n", handler.Filename)
 }
 
-func changeFileOwnerGroup(filePath string) {
-	if conf.Receive.SaveUserID > 0 || conf.Receive.SaveGroupID > 0 {
+func (s *serverImp) changeFileOwnerGroup(filePath string) {
+	if s.conf.Receive.SaveUserID > 0 || s.conf.Receive.SaveGroupID > 0 {
 		slog.Debug("Changing file ownership and group")
-		err := os.Chown(filePath, conf.Receive.SaveUserID, conf.Receive.SaveGroupID)
+		err := os.Chown(filePath, s.conf.Receive.SaveUserID, s.conf.Receive.SaveGroupID)
 		if err != nil {
 			slog.Error("Failed to change ownership of file", "err", err)
 		}
