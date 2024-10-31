@@ -40,7 +40,8 @@ func main() {
 		logger.Info("Waiting to receive files...")
 		select {} // Blocking program waiting to receive file
 	} else {
-		err := send.SendFile(conf, _flags.ToDevice, _flags.FilePath)
+		sender := send.New(conf, logger)
+		err := sender.SendFile(_flags.ToDevice, _flags.FilePath)
 		if err != nil {
 			logger.Error("Send failed", "err", err)
 		}

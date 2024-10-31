@@ -18,7 +18,19 @@ import (
 	"github.com/ilius/localsend-go/pkg/utils"
 )
 
-func sendFileToOtherDevicePrepare(conf *config.Config, ip string, path string) (*models.PrepareReceiveResponse, error) {
+type senderImp struct {
+	conf *config.Config
+	log  *slog.Logger
+}
+
+func New(conf *config.Config, logger *slog.Logger) *senderImp {
+	return &senderImp{
+		conf: conf,
+		log:  logger,
+	}
+}
+
+func (s *senderImp) sendFileToOtherDevicePrepare(ip string, path string) (*models.PrepareReceiveResponse, error) {
 	// Prepare metadata for all files
 	files := make(map[string]models.FileInfo)
 	err := filepath.Walk(path, func(filePath string, info os.FileInfo, err error) error {
@@ -45,7 +57,7 @@ func sendFileToOtherDevicePrepare(conf *config.Config, ip string, path string) (
 		return nil, fmt.Errorf("error walking the path: %w", err)
 	}
 
-	msg := shared.GetMesssage(conf)
+	msg := shared.GetMesssage(s.conf)
 
 	// Create and fill the PrepareReceiveRequest structure
 	request := models.PrepareReceiveRequest{
@@ -108,7 +120,7 @@ func sendFileToOtherDevicePrepare(conf *config.Config, ip string, path string) (
 	return &prepareReceiveResponse, nil
 }
 
-func uploadFile(ip, sessionId, fileId, token, filePath string) error {
+func (s *senderImp) uploadFile(ip, sessionId, fileId, token, filePath string) error {
 	// Open the file you want to send
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -158,13 +170,13 @@ func uploadFile(ip, sessionId, fileId, token, filePath string) error {
 		return fmt.Errorf("file upload failed: received status code %d", resp.StatusCode)
 	}
 
-	slog.Info("File uploaded successfully")
+	s.log.Info("File uploaded successfully")
 	return nil
 }
 
-func SendFile(conf *config.Config, ip string, path string) error {
-	response, err := sendFileToOtherDevicePrepare(conf, ip, path)
-	slog.Info("SendFile: got response", "response", response)
+func (s *senderImp) SendFile(ip string, path string) error {
+	response, err := s.sendFileToOtherDevicePrepare(ip, path)
+	s.log.Info("SendFile: got response", "response", response)
 	if err != nil {
 		return err
 	}
@@ -181,7 +193,7 @@ func SendFile(conf *config.Config, ip string, path string) error {
 			if !ok {
 				return fmt.Errorf("token not found for file: %s", fileId)
 			}
-			err = uploadFile(ip, response.SessionID, fileId, token, filePath)
+			err = s.uploadFile(ip, response.SessionID, fileId, token, filePath)
 			if err != nil {
 				return fmt.Errorf("error uploading file: %w", err)
 			}
