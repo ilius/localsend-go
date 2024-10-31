@@ -7,7 +7,7 @@ import (
 	"github.com/ilius/localsend-go/pkg/discovery/shared"
 )
 
-func (s *serverImp) getInfoHandler(w http.ResponseWriter, r *http.Request) {
+func (s *serverImp) getInfoHandler(w http.ResponseWriter, _ *http.Request) {
 	msg := shared.GetMesssage(s.conf)
 	res, err := json.Marshal(msg)
 	if err != nil {
