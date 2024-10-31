@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 )
 
-// UploadHandler handles file upload requests
-func (s *serverImp) UploadHandler(w http.ResponseWriter, r *http.Request) {
+// uploadHandler handles file upload requests
+func (s *serverImp) uploadHandler(w http.ResponseWriter, r *http.Request) {
 	// Parsing multipart/form-data
 	if err := r.ParseMultipartForm(10 << 20); err != nil {
 		http.Error(w, fmt.Sprintf("Could not parse multipart form: %v", err), http.StatusBadRequest)

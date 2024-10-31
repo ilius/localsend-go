@@ -24,7 +24,7 @@ var (
 	uploadCount      = &atomic.Int64{}
 )
 
-func (s *serverImp) PrepareUploadAPIHandler(w http.ResponseWriter, r *http.Request) {
+func (s *serverImp) prepareUploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.PrepareReceiveRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
@@ -64,7 +64,7 @@ func (s *serverImp) PrepareUploadAPIHandler(w http.ResponseWriter, r *http.Reque
 	json.NewEncoder(w).Encode(resp)
 }
 
-func (s *serverImp) UploadAPIHandler(w http.ResponseWriter, r *http.Request) {
+func (s *serverImp) uploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	sessionID := r.URL.Query().Get("sessionId")
 	fileID := r.URL.Query().Get("fileId")
 	token := r.URL.Query().Get("token")

@@ -20,12 +20,12 @@ func GetFilesFromDir(dir string) ([]os.DirEntry, error) {
 	return entries, nil
 }
 
-func (s *serverImp) FileServerHandler(w http.ResponseWriter, r *http.Request) {
+func (s *serverImp) fileServerHandler(w http.ResponseWriter, r *http.Request) {
 	file := strings.TrimPrefix(r.URL.Path, "/uploads/")
 	http.ServeFile(w, r, filepath.Join(uploadDir, file))
 }
 
-func (s *serverImp) IndexFileHandler(w http.ResponseWriter, r *http.Request) {
+func (s *serverImp) indexFileHandler(w http.ResponseWriter, r *http.Request) {
 	dirPath := filepath.Join(uploadDir, strings.TrimPrefix(r.URL.Path, "/uploads/"))
 
 	info, err := os.Stat(dirPath)

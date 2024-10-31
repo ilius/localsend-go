@@ -10,14 +10,14 @@ import (
 )
 
 type serverImp struct {
-	*http.ServeMux
+	mux  *http.ServeMux
 	conf *config.Config
 }
 
 func New(conf *config.Config) *serverImp {
 	return &serverImp{
-		ServeMux: http.NewServeMux(),
-		conf:     conf,
+		mux:  http.NewServeMux(),
+		conf: conf,
 	}
 }
 
@@ -30,7 +30,7 @@ func (s *serverImp) StartHttpServer() {
 	}
 	go func() {
 		slog.Info("Server starting on :53317")
-		if err := http.ListenAndServe(":53317", s.ServeMux); err != nil {
+		if err := http.ListenAndServe(":53317", s.mux); err != nil {
 			panic(fmt.Sprintf("Server failed: %v", err))
 		}
 	}()
@@ -38,9 +38,9 @@ func (s *serverImp) StartHttpServer() {
 
 // If you enable the http file server, enable the following routes
 func (s *serverImp) addHttpFileServerRoutes() {
-	mux := s.ServeMux
-	mux.HandleFunc("/", s.IndexFileHandler)
-	mux.HandleFunc("/uploads/", s.FileServerHandler)
+	mux := s.mux
+	mux.HandleFunc("/", s.indexFileHandler)
+	mux.HandleFunc("/uploads/", s.fileServerHandler)
 	mux.Handle(
 		"/static/",
 		http.StripPrefix("/static/", http.FileServer(http.FS(static.EmbeddedStaticFiles))),
@@ -48,10 +48,10 @@ func (s *serverImp) addHttpFileServerRoutes() {
 }
 
 func (s *serverImp) addLocalSendServerRoutes() {
-	mux := s.ServeMux
-	mux.HandleFunc("/api/localsend/v2/prepare-upload", s.PrepareUploadAPIHandler)
-	mux.HandleFunc("/api/localsend/v2/upload", s.UploadAPIHandler)
-	mux.HandleFunc("/api/localsend/v2/info", s.GetInfoHandler)
-	mux.HandleFunc("/send", s.UploadHandler)
-	mux.HandleFunc("/receive", s.DownloadHandler)
+	mux := s.mux
+	mux.HandleFunc("/api/localsend/v2/prepare-upload", s.prepareUploadAPIHandler)
+	mux.HandleFunc("/api/localsend/v2/upload", s.uploadAPIHandler)
+	mux.HandleFunc("/api/localsend/v2/info", s.getInfoHandler)
+	mux.HandleFunc("/send", s.uploadHandler)
+	mux.HandleFunc("/receive", s.downloadHandler)
 }

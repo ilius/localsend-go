@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 )
 
-// DownloadHandler handles file download requests
-func (s *serverImp) DownloadHandler(w http.ResponseWriter, r *http.Request) {
+// downloadHandler handles file download requests
+func (s *serverImp) downloadHandler(w http.ResponseWriter, r *http.Request) {
 	fileName := r.URL.Query().Get("file")
 	if fileName == "" {
 		http.Error(w, "File parameter is required", http.StatusBadRequest)
