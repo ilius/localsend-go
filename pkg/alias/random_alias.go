@@ -2,7 +2,7 @@ package alias
 
 import (
 	"crypto/rand"
-	"log/slog"
+	"fmt"
 	"math/big"
 
 	"github.com/ilius/localsend-go/pkg/alias/en"
@@ -26,16 +26,14 @@ func genAlias(lang LangInterface) string {
 	return lang.Combination(adjectives[randomInt(len(adjectives))], fruits[randomInt(len(fruits))])
 }
 
-func GenerateRandomAlias(lang string) string {
+func GenerateRandomAlias(lang string) (string, error) {
 	switch lang {
 	case "", "en":
-		return genAlias(_en)
+		return genAlias(_en), nil
 	case "fa":
-		return genAlias(_fa)
-	default:
-		slog.Error("unsupported language name", "lang", lang)
+		return genAlias(_fa), nil
 	}
-	return genAlias(_en)
+	return genAlias(_en), fmt.Errorf("unsupported language name %#v", lang)
 }
 
 // randomInt returns a uniform random value in [0, max). It panics if max <= 0.

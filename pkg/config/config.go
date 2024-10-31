@@ -13,6 +13,8 @@ import (
 
 const fileName = "config.toml"
 
+// const fallbackAlias = "Unknown"
+
 //go:embed config.toml
 var embedFS embed.FS
 
@@ -74,7 +76,10 @@ func Init() *Config {
 		slog.Info("Loaded user config file", "configData", conf)
 	}
 	if conf.NameOfDevice == "" {
-		name := alias.GenerateRandomAlias(conf.NameLanguage)
+		name, err := alias.GenerateRandomAlias(conf.NameLanguage)
+		if err != nil {
+			slog.Error(err.Error())
+		}
 		slog.Info("Using random name/alias: ", "name", name)
 		conf.NameOfDevice = name
 	}
