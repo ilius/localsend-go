@@ -32,7 +32,8 @@ func main() {
 		clipboard.Init()
 	}
 
-	discovery.Start(conf) // Enable broadcast and monitoring functions
+	// Enable broadcast and monitoring functions
+	discovery.New(conf, logger).Start()
 
 	if _flags.ReceiveMode {
 		srv := server.New(conf, logger)

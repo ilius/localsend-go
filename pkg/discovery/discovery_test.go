@@ -1,9 +1,16 @@
 package discovery
 
-import "testing"
+import (
+	"log/slog"
+	"testing"
+
+	"github.com/ilius/localsend-go/pkg/config"
+)
 
 func TestDiscovery(t *testing.T) {
-	ips, err := pingScan()
+	conf := &config.Config{}
+	d := New(conf, slog.Default())
+	ips, err := d.pingScan()
 	if err != nil {
 		t.Log(err)
 	}
