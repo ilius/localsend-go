@@ -36,7 +36,9 @@ var (
 	termuxPasteArgs = []string{}
 	termuxCopyArgs  = []string{}
 
-	missingCommands = errors.New("No clipboard utilities available. Please install xsel, xclip, wl-clipboard or Termux:API add-on for termux-clipboard-get/set.")
+	missingCommands = errors.New(
+		"No clipboard utilities available. Please install xsel, xclip, wl-clipboard or Termux:API add-on for termux-clipboard-get/set.",
+	)
 )
 
 type commandInfo struct {

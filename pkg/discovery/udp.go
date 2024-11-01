@@ -82,7 +82,15 @@ func (d *discoveryImp) listenForBroadcasts() {
 		}
 
 		if shared.AddDiscoveredDevice(remoteAddr.IP.String(), &message) {
-			d.log.Info("Discovered device", "alias", message.Alias, "deviceModel", message.DeviceModel, "ip", remoteAddr.IP.String())
+			d.log.Info(
+				"Discovered device",
+				"alias",
+				message.Alias,
+				"deviceModel",
+				message.DeviceModel,
+				"ip",
+				remoteAddr.IP.String(),
+			)
 		}
 	}
 }

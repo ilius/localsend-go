@@ -105,7 +105,8 @@ func NewColorable(file *os.File) io.Writer {
 	}
 
 	var mode uint32
-	if r, _, _ := procGetConsoleMode.Call(file.Fd(), uintptr(unsafe.Pointer(&mode))); r != 0 && mode&cENABLE_VIRTUAL_TERMINAL_PROCESSING != 0 {
+	if r, _, _ := procGetConsoleMode.Call(file.Fd(), uintptr(unsafe.Pointer(&mode))); r != 0 &&
+		mode&cENABLE_VIRTUAL_TERMINAL_PROCESSING != 0 {
 		return file
 	}
 	var csbi consoleScreenBufferInfo

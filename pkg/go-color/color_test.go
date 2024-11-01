@@ -519,20 +519,38 @@ func TestIssue218(t *testing.T) {
 	const expectedResult = "\x1b[36mword1 word2 word3 word4\n\x1b[0m\n"
 
 	if !bytes.Equal([]byte(result), []byte(expectedResult)) {
-		t.Errorf("Sprintln: Expecting %v (%v), got '%v (%v)'\n", expectedResult, []byte(expectedResult), result, []byte(result))
+		t.Errorf(
+			"Sprintln: Expecting %v (%v), got '%v (%v)'\n",
+			expectedResult,
+			[]byte(expectedResult),
+			result,
+			[]byte(result),
+		)
 	}
 
 	fn := c.SprintlnFunc()
 	result = fn(params...)
 	if !bytes.Equal([]byte(result), []byte(expectedResult)) {
-		t.Errorf("SprintlnFunc: Expecting %v (%v), got '%v (%v)'\n", expectedResult, []byte(expectedResult), result, []byte(result))
+		t.Errorf(
+			"SprintlnFunc: Expecting %v (%v), got '%v (%v)'\n",
+			expectedResult,
+			[]byte(expectedResult),
+			result,
+			[]byte(result),
+		)
 	}
 
 	var buf bytes.Buffer
 	c.Fprintln(&buf, params...)
 	result = buf.String()
 	if !bytes.Equal([]byte(result), []byte(expectedResult)) {
-		t.Errorf("Fprintln: Expecting %v (%v), got '%v (%v)'\n", expectedResult, []byte(expectedResult), result, []byte(result))
+		t.Errorf(
+			"Fprintln: Expecting %v (%v), got '%v (%v)'\n",
+			expectedResult,
+			[]byte(expectedResult),
+			result,
+			[]byte(result),
+		)
 	}
 }
 
