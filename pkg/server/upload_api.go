@@ -45,7 +45,7 @@ func (s *serverImp) prepareUploadAPIHandler(w http.ResponseWriter, r *http.Reque
 		fileNamesRWMutex.Unlock()
 
 		if strings.HasSuffix(fileInfo.FileName, ".txt") {
-			s.log.Info("TXT file content preview", "preview", string(fileInfo.Preview))
+			s.log.Info("TXT file content preview", "preview", fileInfo.Preview)
 			if s.conf.Receive.Clipboard {
 				err := clipboard.WriteAll(fileInfo.Preview)
 				if err != nil {
