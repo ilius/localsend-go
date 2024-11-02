@@ -8,6 +8,7 @@ max_file_size = 1000000000
 save_user_id = 0
 save_group_id = 0
 clipboard = false
+allowed_ips = []  # allows all IPs if this is empty
 
 [send]
 directory = "uploads"

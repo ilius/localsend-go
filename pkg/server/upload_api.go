@@ -64,6 +64,12 @@ func (s *serverImp) prepareUploadAPIHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func (s *serverImp) uploadAPIHandler(w http.ResponseWriter, r *http.Request) {
+	if s.receiveIpBlocked(r) {
+		s.log.Warn("uploadAPIHandler blocked IP that is not allowd", "ip", r.RemoteAddr)
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	sessionID := r.URL.Query().Get("sessionId")
 	fileID := r.URL.Query().Get("fileId")
 	token := r.URL.Query().Get("token")

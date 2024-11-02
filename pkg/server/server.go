@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"log/slog"
+	"net"
 	"net/http"
 
 	"github.com/ilius/localsend-go/pkg/config"
@@ -13,14 +14,24 @@ type serverImp struct {
 	mux  *http.ServeMux
 	conf *config.Config
 	log  *slog.Logger
+
+	allowedUploadRemoteIPs map[string]struct{}
 }
 
 func New(conf *config.Config, logger *slog.Logger) *serverImp {
-	return &serverImp{
+	srv := &serverImp{
 		mux:  http.NewServeMux(),
 		conf: conf,
 		log:  logger,
 	}
+	if len(conf.Receive.AllowedIPs) > 0 {
+		ipMap := map[string]struct{}{}
+		for _, ip := range conf.Receive.AllowedIPs {
+			ipMap[ip] = struct{}{}
+		}
+		srv.allowedUploadRemoteIPs = ipMap
+	}
+	return srv
 }
 
 func (s *serverImp) StartHttpServer() {
@@ -56,4 +67,18 @@ func (s *serverImp) addLocalSendServerRoutes() {
 	mux.HandleFunc("/api/localsend/v2/info", s.getInfoHandler)
 	mux.HandleFunc("/send", s.uploadHandler)
 	mux.HandleFunc("/receive", s.downloadHandler)
+}
+
+func (s *serverImp) receiveIpBlocked(r *http.Request) bool {
+	if s.allowedUploadRemoteIPs == nil {
+		return false
+	}
+	ip, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		s.log.Error("error in SplitHostPort", "remoteAddr", r.RemoteAddr)
+		return true
+	}
+	_, allowed := s.allowedUploadRemoteIPs[ip]
+	s.log.Debug("receiveIpBlocked", "ip", ip, "remoteAddr", r.RemoteAddr, "allowed", allowed)
+	return !allowed
 }

@@ -23,12 +23,13 @@ type Config struct {
 	NameLanguage string `toml:"name_language"`
 	MulticastIP  string `toml:"multicast_ip"`
 	Receive      struct {
-		Directory          string `toml:"directory"`
-		MaxFileSize        int    `toml:"max_file_size"`
-		SaveUserID         int    `toml:"save_user_id"`
-		SaveGroupID        int    `toml:"save_group_id"`
-		Clipboard          bool   `toml:"clipboard"`
-		ExitAfterFileCount int    `toml:"exit_after_file_count"`
+		Directory          string   `toml:"directory"`
+		MaxFileSize        int      `toml:"max_file_size"`
+		SaveUserID         int      `toml:"save_user_id"`
+		SaveGroupID        int      `toml:"save_group_id"`
+		Clipboard          bool     `toml:"clipboard"`
+		ExitAfterFileCount int      `toml:"exit_after_file_count"`
+		AllowedIPs         []string `toml:"allowed_ips"`
 	} `toml:"receive"`
 	Send struct {
 		Directory string `toml:"directory"`
