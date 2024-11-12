@@ -30,7 +30,7 @@ func (s *serverImp) prepareUploadAPIHandler(w http.ResponseWriter, r *http.Reque
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	s.log.Info("Received request:", "req", req)
+	s.log.Info("Received request:", "remote_addr", r.RemoteAddr, "req", req)
 
 	sessionID := fmt.Sprintf("session-%d", sessionIDCounter.Add(1))
 
