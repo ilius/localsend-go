@@ -16,6 +16,6 @@ func platformConfigDir() string {
 	return filepath.Join(parent, "localsend-go")
 }
 
-//func GetCacheDir() string {
-//	return filepath.Join(os.Getenv(S_HOME), ".cache", "localsend-go")
-//}
+// func GetCacheDir() string {
+// 	return filepath.Join(os.Getenv(S_HOME), ".cache", "localsend-go")
+// }

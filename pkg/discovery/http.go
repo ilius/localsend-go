@@ -33,8 +33,8 @@ func getLocalIP() ([]net.IP, error) {
 		}
 
 		for _, addr := range addrs {
-			switch v := addr.(type) {
-			case *net.IPNet:
+			v, ok := addr.(*net.IPNet)
+			if ok {
 				if v.IP.To4() != nil && !v.IP.IsLoopback() {
 					ips = append(ips, v.IP)
 				}
