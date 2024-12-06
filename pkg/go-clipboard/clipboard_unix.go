@@ -36,8 +36,8 @@ var (
 	termuxPasteArgs = []string{}
 	termuxCopyArgs  = []string{}
 
-	missingCommands = errors.New(
-		"No clipboard utilities available. Please install xsel, xclip, wl-clipboard or Termux:API add-on for termux-clipboard-get/set.",
+	errMissingCommands = errors.New(
+		"no clipboard utilities available. Please install xsel, xclip, wl-clipboard or Termux:API add-on for termux-clipboard-get/set",
 	)
 )
 
@@ -113,7 +113,7 @@ func getCopyCommand(c *commandInfo) *exec.Cmd {
 func readAll() (string, error) {
 	c := findClipboardUtility()
 	if c.unsupported {
-		return "", missingCommands
+		return "", errMissingCommands
 	}
 
 	pasteCmd := getPasteCommand(c)
@@ -128,7 +128,7 @@ func readAll() (string, error) {
 func writeAll(text string) error {
 	c := findClipboardUtility()
 	if c.unsupported {
-		return missingCommands
+		return errMissingCommands
 	}
 
 	copyCmd := getCopyCommand(c)
