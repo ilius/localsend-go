@@ -4,18 +4,18 @@ import (
 	"sync"
 
 	"github.com/ilius/localsend-go/pkg/config"
-	. "github.com/ilius/localsend-go/pkg/models"
+	"github.com/ilius/localsend-go/pkg/models"
 	"github.com/ilius/localsend-go/pkg/utils"
 )
 
 // Global device record hash table and mutex, Message information
 
 var (
-	discoveredDevices      = make(map[string]*BroadcastMessage)
+	discoveredDevices      = make(map[string]*models.BroadcastMessage)
 	discoveredDevicesMutex sync.Mutex
 )
 
-func AddDiscoveredDevice(ip string, msg *BroadcastMessage) bool {
+func AddDiscoveredDevice(ip string, msg *models.BroadcastMessage) bool {
 	discoveredDevicesMutex.Lock()
 	defer discoveredDevicesMutex.Unlock()
 	if _, exists := discoveredDevices[ip]; !exists {
@@ -26,8 +26,8 @@ func AddDiscoveredDevice(ip string, msg *BroadcastMessage) bool {
 }
 
 // https://github.com/localsend/protocol?tab=readme-ov-file#71-device-type
-func GetMesssage(conf *config.Config) BroadcastMessage {
-	return BroadcastMessage{
+func GetMesssage(conf *config.Config) models.BroadcastMessage {
+	return models.BroadcastMessage{
 		Alias:       conf.NameOfDevice,
 		Version:     "2.0",
 		DeviceModel: utils.OSType(),
