@@ -6,9 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/fs"
 	"math"
-	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -27,34 +25,6 @@ type Unmarshaler interface {
 func Unmarshal(data []byte, v any) error {
 	_, err := NewDecoder(bytes.NewReader(data)).Decode(v)
 	return err
-}
-
-// Decode the TOML data in to the pointer v.
-//
-// See [Decoder] for a description of the decoding process.
-func Decode(data string, v any) (MetaData, error) {
-	return NewDecoder(strings.NewReader(data)).Decode(v)
-}
-
-// DecodeFile reads the contents of a file and decodes it with [Decode].
-func DecodeFile(path string, v any) (MetaData, error) {
-	fp, err := os.Open(path)
-	if err != nil {
-		return MetaData{}, err
-	}
-	defer fp.Close()
-	return NewDecoder(fp).Decode(v)
-}
-
-// DecodeFS reads the contents of a file from [fs.FS] and decodes it with
-// [Decode].
-func DecodeFS(fsys fs.FS, path string, v any) (MetaData, error) {
-	fp, err := fsys.Open(path)
-	if err != nil {
-		return MetaData{}, err
-	}
-	defer fp.Close()
-	return NewDecoder(fp).Decode(v)
 }
 
 // Primitive is a TOML value that hasn't been decoded into a Go value.

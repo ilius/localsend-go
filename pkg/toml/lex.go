@@ -2,8 +2,6 @@ package toml
 
 import (
 	"fmt"
-	"reflect"
-	"runtime"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -1191,17 +1189,6 @@ func lexComment(lx *lexer) stateFn {
 func lexSkip(lx *lexer, nextState stateFn) stateFn {
 	lx.ignore()
 	return nextState
-}
-
-func (s stateFn) String() string {
-	name := runtime.FuncForPC(reflect.ValueOf(s).Pointer()).Name()
-	if i := strings.LastIndexByte(name, '.'); i > -1 {
-		name = name[i+1:]
-	}
-	if s == nil {
-		name = "<nil>"
-	}
-	return name + "()"
 }
 
 func (itype itemType) String() string {
