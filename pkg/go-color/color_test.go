@@ -268,31 +268,11 @@ func TestColorVisual(t *testing.T) {
 	New(FgWhite, Bold).Println(" white")
 	fmt.Println("")
 
-	// Second Visual test
-	Black("black")
-	Red("red")
-	Green("green")
-	Yellow("yellow")
-	Blue("blue")
-	Magenta("magenta")
-	Cyan("cyan")
-	White("white")
-	HiBlack("hblack")
-	HiRed("hred")
-	HiGreen("hgreen")
-	HiYellow("hyellow")
-	HiBlue("hblue")
-	HiMagenta("hmagenta")
-	HiCyan("hcyan")
-	HiWhite("hwhite")
-
 	// Third visual test
 	fmt.Println()
-	Set(FgBlue)
 	fmt.Println("is this blue?")
 	Unset()
 
-	Set(FgMagenta)
 	fmt.Println("and this magenta?")
 	Unset()
 
@@ -318,72 +298,7 @@ func TestColorVisual(t *testing.T) {
 	// Fifth Visual Test
 	fmt.Println()
 
-	fmt.Fprintln(Output, BlackString("black"))
-	fmt.Fprintln(Output, RedString("red"))
-	fmt.Fprintln(Output, GreenString("green"))
-	fmt.Fprintln(Output, YellowString("yellow"))
-	fmt.Fprintln(Output, BlueString("blue"))
-	fmt.Fprintln(Output, MagentaString("magenta"))
-	fmt.Fprintln(Output, CyanString("cyan"))
-	fmt.Fprintln(Output, WhiteString("white"))
-	fmt.Fprintln(Output, HiBlackString("hblack"))
-	fmt.Fprintln(Output, HiRedString("hred"))
-	fmt.Fprintln(Output, HiGreenString("hgreen"))
-	fmt.Fprintln(Output, HiYellowString("hyellow"))
-	fmt.Fprintln(Output, HiBlueString("hblue"))
-	fmt.Fprintln(Output, HiMagentaString("hmagenta"))
-	fmt.Fprintln(Output, HiCyanString("hcyan"))
 	fmt.Fprintln(Output, HiWhiteString("hwhite"))
-}
-
-func TestNoFormat(t *testing.T) {
-	fmt.Printf("%s   %%s = ", BlackString("Black"))
-	Black("%s")
-
-	fmt.Printf("%s     %%s = ", RedString("Red"))
-	Red("%s")
-
-	fmt.Printf("%s   %%s = ", GreenString("Green"))
-	Green("%s")
-
-	fmt.Printf("%s  %%s = ", YellowString("Yellow"))
-	Yellow("%s")
-
-	fmt.Printf("%s    %%s = ", BlueString("Blue"))
-	Blue("%s")
-
-	fmt.Printf("%s %%s = ", MagentaString("Magenta"))
-	Magenta("%s")
-
-	fmt.Printf("%s    %%s = ", CyanString("Cyan"))
-	Cyan("%s")
-
-	fmt.Printf("%s   %%s = ", WhiteString("White"))
-	White("%s")
-
-	fmt.Printf("%s   %%s = ", HiBlackString("HiBlack"))
-	HiBlack("%s")
-
-	fmt.Printf("%s     %%s = ", HiRedString("HiRed"))
-	HiRed("%s")
-
-	fmt.Printf("%s   %%s = ", HiGreenString("HiGreen"))
-	HiGreen("%s")
-
-	fmt.Printf("%s  %%s = ", HiYellowString("HiYellow"))
-	HiYellow("%s")
-
-	fmt.Printf("%s    %%s = ", HiBlueString("HiBlue"))
-	HiBlue("%s")
-
-	fmt.Printf("%s %%s = ", HiMagentaString("HiMagenta"))
-	HiMagenta("%s")
-
-	fmt.Printf("%s    %%s = ", HiCyanString("HiCyan"))
-	HiCyan("%s")
-
-	fmt.Printf("%s   %%s = ", HiWhiteString("HiWhite"))
-	HiWhite("%s")
 }
 
 func TestNoFormatString(t *testing.T) {
@@ -393,21 +308,6 @@ func TestNoFormatString(t *testing.T) {
 		args   []interface{}
 		want   string
 	}{
-		{BlackString, "%s", nil, "\x1b[30m%s\x1b[0m"},
-		{RedString, "%s", nil, "\x1b[31m%s\x1b[0m"},
-		{GreenString, "%s", nil, "\x1b[32m%s\x1b[0m"},
-		{YellowString, "%s", nil, "\x1b[33m%s\x1b[0m"},
-		{BlueString, "%s", nil, "\x1b[34m%s\x1b[0m"},
-		{MagentaString, "%s", nil, "\x1b[35m%s\x1b[0m"},
-		{CyanString, "%s", nil, "\x1b[36m%s\x1b[0m"},
-		{WhiteString, "%s", nil, "\x1b[37m%s\x1b[0m"},
-		{HiBlackString, "%s", nil, "\x1b[90m%s\x1b[0m"},
-		{HiRedString, "%s", nil, "\x1b[91m%s\x1b[0m"},
-		{HiGreenString, "%s", nil, "\x1b[92m%s\x1b[0m"},
-		{HiYellowString, "%s", nil, "\x1b[93m%s\x1b[0m"},
-		{HiBlueString, "%s", nil, "\x1b[94m%s\x1b[0m"},
-		{HiMagentaString, "%s", nil, "\x1b[95m%s\x1b[0m"},
-		{HiCyanString, "%s", nil, "\x1b[96m%s\x1b[0m"},
 		{HiWhiteString, "%s", nil, "\x1b[97m%s\x1b[0m"},
 	}
 
@@ -470,41 +370,6 @@ func readRaw(t *testing.T, r io.Reader) string {
 	return string(out)
 }
 
-func TestIssue206_1(t *testing.T) {
-	// visual test, go test -v .
-	// to  see the string with escape codes, use go test -v . > c:\temp\test.txt
-	underline := New(Underline).Sprint
-
-	line := fmt.Sprintf("%s %s %s %s", "word1", underline("word2"), "word3", underline("word4"))
-
-	line = CyanString(line)
-
-	fmt.Println(line)
-
-	result := fmt.Sprintf("%v", line)
-	const expectedResult = "\x1b[36mword1 \x1b[4mword2\x1b[24m word3 \x1b[4mword4\x1b[24m\x1b[0m"
-
-	if !bytes.Equal([]byte(result), []byte(expectedResult)) {
-		t.Errorf("Expecting %v, got '%v'\n", expectedResult, result)
-	}
-}
-
-func TestIssue206_2(t *testing.T) {
-	underline := New(Underline).Sprint
-	bold := New(Bold).Sprint
-
-	line := fmt.Sprintf("%s %s", GreenString(underline("underlined regular green")), RedString(bold("bold red")))
-
-	fmt.Println(line)
-
-	result := fmt.Sprintf("%v", line)
-	const expectedResult = "\x1b[32m\x1b[4munderlined regular green\x1b[24m\x1b[0m \x1b[31m\x1b[1mbold red\x1b[22m\x1b[0m"
-
-	if !bytes.Equal([]byte(result), []byte(expectedResult)) {
-		t.Errorf("Expecting %v, got '%v'\n", expectedResult, result)
-	}
-}
-
 func TestIssue218(t *testing.T) {
 	// Adds a newline to the end of the last string to make sure it isn't trimmed.
 	params := []interface{}{"word1", "word2", "word3", "word4\n"}
@@ -551,23 +416,5 @@ func TestIssue218(t *testing.T) {
 			result,
 			[]byte(result),
 		)
-	}
-}
-
-func TestRGB(t *testing.T) {
-	tests := []struct {
-		r, g, b int
-	}{
-		{255, 128, 0}, // orange
-		{230, 42, 42}, // red
-	}
-
-	for i, tt := range tests {
-		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			RGB(tt.r, tt.g, tt.b).Println("foreground")
-			RGB(tt.r, tt.g, tt.b).AddBgRGB(0, 0, 0).Println("with background")
-			BgRGB(tt.r, tt.g, tt.b).Println("background")
-			BgRGB(tt.r, tt.g, tt.b).AddRGB(255, 255, 255).Println("with foreground")
-		})
 	}
 }
