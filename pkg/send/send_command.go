@@ -12,10 +12,10 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/ilius/localsend-go/pkg/config"
-	"github.com/ilius/localsend-go/pkg/discovery/shared"
-	"github.com/ilius/localsend-go/pkg/models"
-	"github.com/ilius/localsend-go/pkg/utils"
+	"codeberg.org/ilius/localsend-go/pkg/config"
+	"codeberg.org/ilius/localsend-go/pkg/discovery/shared"
+	"codeberg.org/ilius/localsend-go/pkg/models"
+	"codeberg.org/ilius/localsend-go/pkg/utils"
 )
 
 type senderImp struct {

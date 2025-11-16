@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ilius/localsend-go/pkg/templates"
+	"codeberg.org/ilius/localsend-go/pkg/templates"
 )
 
 const uploadDir = "./uploads"

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/ilius/localsend-go/pkg/discovery/shared"
+	"codeberg.org/ilius/localsend-go/pkg/discovery/shared"
 )
 
 func (s *serverImp) getInfoHandler(w http.ResponseWriter, _ *http.Request) {

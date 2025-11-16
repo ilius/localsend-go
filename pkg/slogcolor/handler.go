@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ilius/localsend-go/pkg/go-color"
+	"codeberg.org/ilius/localsend-go/pkg/go-color"
 )
 
 type Handler struct {

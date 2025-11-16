@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/ilius/localsend-go/pkg/go-colorable"
+	"codeberg.org/ilius/localsend-go/pkg/go-colorable"
 )
 
 // Testing colors is kinda different. First we test for given colors and their

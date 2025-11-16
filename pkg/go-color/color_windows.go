@@ -1,6 +1,6 @@
 package color
 
-import "github.com/ilius/localsend-go/pkg/go-colorable"
+import "codeberg.org/ilius/localsend-go/pkg/go-colorable"
 
 func init() {
 	// Opt-in for ansi color support for current process.

@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/ilius/localsend-go/pkg/alias"
-	"github.com/ilius/localsend-go/pkg/toml"
+	"codeberg.org/ilius/localsend-go/pkg/alias"
+	"codeberg.org/ilius/localsend-go/pkg/toml"
 )
 
 const fileName = "config.toml"

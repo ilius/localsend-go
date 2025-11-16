@@ -3,7 +3,7 @@ package discovery
 import (
 	"log/slog"
 
-	"github.com/ilius/localsend-go/pkg/config"
+	"codeberg.org/ilius/localsend-go/pkg/config"
 )
 
 type discoveryImp struct {

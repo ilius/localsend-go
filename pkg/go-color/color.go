@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ilius/localsend-go/pkg/go-colorable"
+	"codeberg.org/ilius/localsend-go/pkg/go-colorable"
 )
 
 var (

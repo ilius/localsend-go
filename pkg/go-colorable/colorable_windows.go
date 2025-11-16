@@ -488,7 +488,7 @@ loop:
 			}
 			w.rest.Reset()
 			continue
-		// https://github.com/ilius/localsend-go/pkg/go-colorable/issues/27
+		// https://codeberg.org/ilius/localsend-go/pkg/go-colorable/issues/27
 		case '7':
 			procGetConsoleScreenBufferInfo.Call(uintptr(handle), uintptr(unsafe.Pointer(&csbi)))
 			w.oldpos = csbi.cursorPosition
@@ -884,7 +884,7 @@ func (c consoleColor) foregroundAttr() (attr word) {
 	if c.intensity {
 		attr |= foregroundIntensity
 	}
-	return
+	return attr
 }
 
 func (c consoleColor) backgroundAttr() (attr word) {
@@ -900,7 +900,7 @@ func (c consoleColor) backgroundAttr() (attr word) {
 	if c.intensity {
 		attr |= backgroundIntensity
 	}
-	return
+	return attr
 }
 
 var color16 = []consoleColor{

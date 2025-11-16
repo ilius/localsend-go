@@ -12,8 +12,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ilius/localsend-go/pkg/go-clipboard"
-	"github.com/ilius/localsend-go/pkg/models"
+	"codeberg.org/ilius/localsend-go/pkg/go-clipboard"
+	"codeberg.org/ilius/localsend-go/pkg/models"
 )
 
 var (

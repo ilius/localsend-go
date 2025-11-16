@@ -11,7 +11,7 @@ You can download executable files from the Releases.
 ### Clone the Repository
 
 ```sh
-git clone https://github.com/ilius/localsend-go.git
+git clone https://codeberg.org/ilius/localsend-go.git
 cd localsend-go
 ```
 

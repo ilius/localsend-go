@@ -6,8 +6,8 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/ilius/localsend-go/pkg/config"
-	"github.com/ilius/localsend-go/pkg/static"
+	"codeberg.org/ilius/localsend-go/pkg/config"
+	"codeberg.org/ilius/localsend-go/pkg/static"
 )
 
 type serverImp struct {

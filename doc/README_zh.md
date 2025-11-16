@@ -15,7 +15,7 @@
 ### 克隆仓库
 
 ```sh
-git clone https://github.com/ilius/localsend-go.git
+git clone https://codeberg.org/ilius/localsend-go.git
 cd localsend-go
 ```
 

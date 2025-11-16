@@ -9,7 +9,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/ilius/localsend-go/pkg/toml/internal"
+	"codeberg.org/ilius/localsend-go/pkg/toml/internal"
 )
 
 type parser struct {

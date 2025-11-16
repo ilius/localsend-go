@@ -5,8 +5,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/ilius/localsend-go/pkg/discovery/shared"
-	"github.com/ilius/localsend-go/pkg/models"
+	"codeberg.org/ilius/localsend-go/pkg/discovery/shared"
+	"codeberg.org/ilius/localsend-go/pkg/models"
 )
 
 // startBroadcast sends a broadcast message

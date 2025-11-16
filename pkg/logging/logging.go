@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ilius/localsend-go/pkg/config"
-	"github.com/ilius/localsend-go/pkg/go-color"
-	"github.com/ilius/localsend-go/pkg/slogcolor"
+	"codeberg.org/ilius/localsend-go/pkg/config"
+	"codeberg.org/ilius/localsend-go/pkg/go-color"
+	"codeberg.org/ilius/localsend-go/pkg/slogcolor"
 )
 
 const DefaultLevel = slog.LevelInfo

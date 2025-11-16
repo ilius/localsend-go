@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/ilius/localsend-go/pkg/config"
+	"codeberg.org/ilius/localsend-go/pkg/config"
 )
 
 func TestDiscovery(t *testing.T) {

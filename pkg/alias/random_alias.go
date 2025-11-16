@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ilius/localsend-go/pkg/alias/en"
-	"github.com/ilius/localsend-go/pkg/alias/fa"
+	"codeberg.org/ilius/localsend-go/pkg/alias/en"
+	"codeberg.org/ilius/localsend-go/pkg/alias/fa"
 )
 
 type LangInterface interface {
